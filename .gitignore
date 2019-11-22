@@ -1,5 +1,6 @@
 *.egg-info
-__pycahe__
+__pycahe__/
 dist/
 .idea/
 .python-version
+
