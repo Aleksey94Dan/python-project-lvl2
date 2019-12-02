@@ -13,7 +13,7 @@ def parse():
     parser.add_argument('-f', '--format', type=str,
                         help='set format of output')
     parser.parse_args()
-    # parser.print_help()
+
 
 def main():
     parse()
