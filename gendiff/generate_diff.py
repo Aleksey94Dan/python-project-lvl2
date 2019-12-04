@@ -22,24 +22,40 @@ def get_common_keys(files):
     return list(common_file.keys())
 
 
-def get_diff_values(files, keys):
-    # set_before = {get_first_file(files).get(key, None) for key in keys}
-    # set_after = {get_second_file(files).get(key, None) for key in keys}
+def get_deleted_data(files, keys):
     return {
-        key: {
-            get_first_file(files).get(key, None),
-            get_second_file(files).get(key, None),
-            }
-        for key in keys
+        key:
+            {get_first_file(files).get(key)}.difference({get_second_file(files).get(key)})
+            for key in keys
     }
 
 
+def get_added_data(files, keys):
+    return {
+        key:
+            {get_second_file(files).get(key)}.difference({get_first_file(files).get(key)})
+            for key in keys
+    }
 
-files = make_files(
-    json.load(open('gendiff/after.json')),
-    json.load(open('gendiff/before.json'))
-    )
-keys = get_common_keys(files)
+
+def get_diff_data(files, kyes):
+    first_file = get_first_file(files)
+    second_file = get_second_file(files)
+    deleted_data = get_deleted_data(files, kyes)
+    added_data = get_added_data(files, keys)
+    space, add, sub = ('   ', ' + ', ' - ')
+    diff_data = dict()
+    for key in keys:
+        if len(deleted_data[key]) == 0:
+            diff_data[space + key] = first_file[key]
+        else:
+            diff_data[add + key] = list(added_data[key])
+            if None in diff_data[add + key]:
+                del diff_data[add + key]
+            diff_data[sub + key] = list(deleted_data[key])
+            if None in diff_data[sub + key]:
+                del diff_data[sub + key]
+    return  diff_data
 
 
 
