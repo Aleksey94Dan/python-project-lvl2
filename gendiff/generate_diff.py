@@ -23,44 +23,45 @@ def get_common_keys(files):
 
 
 def get_deleted_data(files, keys):
-    return {
+    d =  {
         key:
-            {get_first_file(files).get(key)}.difference({get_second_file(files).get(key)})
+            list({get_first_file(files).get(key)}.difference({get_second_file(files).get(key)}))
             for key in keys
     }
-
+    return d
 
 def get_added_data(files, keys):
     return {
         key:
-            {get_second_file(files).get(key)}.difference({get_first_file(files).get(key)})
+            list({get_second_file(files).get(key)}.difference({get_first_file(files).get(key)}))
             for key in keys
     }
 
 
+def get_unchangeable_data(files, keys):
+    return {
+        key:
+            list({get_second_file(files).get(key)}.intersection({get_first_file(files).get(key)}))
+            for key in keys
+    }
+
+
+
 def get_diff_data(files, kyes):
-    first_file = get_first_file(files)
-    second_file = get_second_file(files)
+    unchangeable_data = get_unchangeable_data(files, keys)
     deleted_data = get_deleted_data(files, kyes)
     added_data = get_added_data(files, keys)
     space, add, sub = ('   ', ' + ', ' - ')
     diff_data = dict()
     for key in keys:
         if len(deleted_data[key]) == 0:
-            diff_data[space + key] = first_file[key]
+            diff_data[space + key] = unchangeable_data[key][0]
         else:
-            diff_data[add + key] = list(added_data[key])
-            if None in diff_data[add + key]:
-                del diff_data[add + key]
-            diff_data[sub + key] = list(deleted_data[key])
-            if None in diff_data[sub + key]:
-                del diff_data[sub + key]
-    return  diff_data
+            diff_data[add + key] = added_data[key][0]
+            diff_data[sub + key] = deleted_data[key][0]
+    return {key: value for key, value in diff_data.items() if value}
 
 
+def convert_to_json(data):
+    return json.dumps(data, indent=4)
 
-
-# print(get_common_values(files, keys))
-print(keys)
-print()
-print(get_diff_values(files, keys))
