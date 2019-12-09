@@ -1,4 +1,6 @@
 import json
+import os
+import os.path
 
 
 def make_files(file1, file2):
@@ -42,9 +44,18 @@ files = make_files(
 keys = get_common_keys(files)
 
 
-
+print(os.getcwd())
 
 # print(get_common_values(files, keys))
 print(keys)
 print()
-print(get_diff_values(files, keys))
+
+
+file1 = 'after.json'
+file2 = 'before.json'
+
+file1_path = os.path.join(os.environ.get('HOME'), file1)
+file2_path = os.path.join(os.environ.get('HOME'), file2)
+
+print(file1_path)
+print(file2_path)
