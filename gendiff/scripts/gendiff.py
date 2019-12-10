@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 
 import argparse
-from gendiff.src.generate_diff import generate_diff
+from gendiff.generate_diff import generate_diff
 
 
 def parse():
@@ -17,7 +17,8 @@ def parse():
     args = parser.parse_args()
     path1 = args.first_file
     path2 = args.second_file
-    print(generate_diff(path1, path2))
+    generate_diff(path1, path2)
+    # generate_diff.generate_diff(path1, path2)
 
 
 def main():
