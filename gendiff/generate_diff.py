@@ -1,12 +1,22 @@
 import json
 import os
-import os.path
+from sys import stdout
 
 
-def make_files(file1, file2):
+def get_files(file1):
+    worked_files = [os.path.split(file1)[-1]]
+    path_to_file = ''
+    for root, _, files in os.walk(os.getcwd()):
+        for file in files:
+            if file in worked_files:
+                path_to_file = os.path.join(root, file)
+    return path_to_file
+
+
+def make_files(path_to_file1, path_to_file2):
     return {
-        'after_file': file1,
-        'before_file': file2,
+        'after_file': json.load(open(path_to_file1)),
+        'before_file': json.load(open(path_to_file2)),
     }
 
 
@@ -25,17 +35,20 @@ def get_common_keys(files):
 
 
 def get_deleted_data(files, keys):
-    d =  {
+    d = {
         key:
-            list({get_first_file(files).get(key)}.difference({get_second_file(files).get(key)}))
+            list({get_first_file(files).get(key)}.difference(
+                {get_second_file(files).get(key)}))
             for key in keys
     }
     return d
 
+
 def get_added_data(files, keys):
     return {
         key:
-            list({get_second_file(files).get(key)}.difference({get_first_file(files).get(key)}))
+            list({get_second_file(files).get(key)}.difference(
+                {get_first_file(files).get(key)}))
             for key in keys
     }
 
@@ -43,19 +56,19 @@ def get_added_data(files, keys):
 def get_unchangeable_data(files, keys):
     return {
         key:
-            list({get_second_file(files).get(key)}.intersection({get_first_file(files).get(key)}))
+            list({get_second_file(files).get(key)}.intersection(
+                {get_first_file(files).get(key)}))
             for key in keys
     }
 
 
-
 def get_diff_data(files, kyes):
-    unchangeable_data = get_unchangeable_data(files, keys)
+    unchangeable_data = get_unchangeable_data(files, kyes)
     deleted_data = get_deleted_data(files, kyes)
-    added_data = get_added_data(files, keys)
+    added_data = get_added_data(files, kyes)
     space, add, sub = ('   ', ' + ', ' - ')
     diff_data = dict()
-    for key in keys:
+    for key in kyes:
         if len(deleted_data[key]) == 0:
             diff_data[space + key] = unchangeable_data[key][0]
         else:
@@ -63,25 +76,16 @@ def get_diff_data(files, kyes):
             diff_data[sub + key] = deleted_data[key][0]
     return {key: value for key, value in diff_data.items() if value}
 
-<<<<<<< HEAD
-print(os.getcwd())
-
-# print(get_common_values(files, keys))
-print(keys)
-print()
-
-
-file1 = 'after.json'
-file2 = 'before.json'
-
-file1_path = os.path.join(os.environ.get('HOME'), file1)
-file2_path = os.path.join(os.environ.get('HOME'), file2)
-
-print(file1_path)
-print(file2_path)
-=======
 
 def convert_to_json(data):
-    return json.dumps(data, indent=4)
+    return json.dumps(data, indent=4, separators=(',', ':'))
 
->>>>>>> 75468be29fda38bb7bc598592f9d49a7caedcf90
+
+def generate_diff(path_to_file1, path_to_file2):
+    path1 = get_files(path_to_file1)
+    path2 = get_files(path_to_file2)
+    files = make_files(path1, path2)
+    keys = get_common_keys(files)
+    data = get_diff_data(files, keys)
+    for key, value in data.items():
+        stdout.write('{}:{}\n'.format(key, value))
