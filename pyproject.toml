@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "Aleksey94dan-gendiff"
-version = "0.2.0"
+version = "0.5.0"
 description = ""
 authors = ["Aleksey Danilchenko <danilchenko.aleksey94@gmail.com>"]
 packages = [
@@ -9,9 +9,10 @@ packages = [
 
 [tool.poetry.dependencies]
 python = "^3.7"
-flake8 = "^3.7"
 
 [tool.poetry.dev-dependencies]
+flake8 = "^3.7"
+
 
 [[tool.poetry.source]]
 name = "test"
