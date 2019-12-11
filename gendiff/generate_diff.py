@@ -66,7 +66,7 @@ def get_diff_data(files, kyes):
     unchangeable_data = get_unchangeable_data(files, kyes)
     deleted_data = get_deleted_data(files, kyes)
     added_data = get_added_data(files, kyes)
-    space, add, sub = ('   ', ' + ', ' - ')
+    space, add, sub = ('  ', '+ ', '- ')
     diff_data = dict()
     for key in kyes:
         if len(deleted_data[key]) == 0:
@@ -78,7 +78,7 @@ def get_diff_data(files, kyes):
 
 
 def convert_to_json(data):
-    return json.dumps(data, indent=4, separators=(',', ':'))
+    return json.dumps(data, indent=2, separators=('', ': '))
 
 
 def generate_diff(path_to_file1, path_to_file2):
@@ -86,8 +86,6 @@ def generate_diff(path_to_file1, path_to_file2):
     path2 = get_files(path_to_file2)
     files = make_files(path1, path2)
     keys = get_common_keys(files)
-    data = get_diff_data(files, keys)
-    stdout.write('{\n')
-    for key, value in data.items():
-        stdout.write('{}:{}\n'.format(key, value))
-    stdout.write('}\n')
+    data = convert_to_json(get_diff_data(files, keys))
+    stdout.write(data.replace('"', ''))
+    stdout.write('\n')
