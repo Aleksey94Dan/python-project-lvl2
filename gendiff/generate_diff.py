@@ -1,19 +1,41 @@
+# -*- coding:utf-8 -*-
+
+"""Interface for calculating the difference of two files."""
+
+
 import json
 import os
 from sys import stdout
 
 
-def get_files(file1):
-    worked_files = [os.path.split(file1)[-1]]
+def get_files(path_to_file):
+    """Return from get_files the absolute path of the file.
+
+    Arguments:
+        path_to_file {string} -- The namepath to file.
+
+    Returns:
+        string -- The path to file.
+    """
+    worked_files = [os.path.split(path_to_file)[-1]]
     path_to_file = ''
     for root, _, files in os.walk(os.getcwd()):
-        for file in files:
-            if file in worked_files:
-                path_to_file = os.path.join(root, file)
+        for document in files:
+            if document in worked_files:
+                path_to_file = os.path.join(root, document)
     return path_to_file
 
 
 def make_files(path_to_file1, path_to_file2):
+    """[summary]
+    
+    Arguments:
+        path_to_file1 {[type]} -- [description]
+        path_to_file2 {[type]} -- [description]
+    
+    Returns:
+        [type] -- [description]
+    """
     return {
         'after_file': json.load(open(path_to_file1)),
         'before_file': json.load(open(path_to_file2)),
