@@ -1,5 +1,6 @@
 import json
 import os
+from sys import stdout
 
 
 def get_files(file1):
@@ -77,7 +78,7 @@ def get_diff_data(files, kyes):
 
 
 def convert_to_json(data):
-    return json.dumps(data, indent=4)
+    return json.dumps(data, indent=4, separators=(',', ':'))
 
 
 def generate_diff(path_to_file1, path_to_file2):
@@ -86,4 +87,7 @@ def generate_diff(path_to_file1, path_to_file2):
     files = make_files(path1, path2)
     keys = get_common_keys(files)
     data = get_diff_data(files, keys)
-    return convert_to_json(data)
+    stdout.write('{\n')
+    for key, value in data.items():
+        stdout.write('{}:{}\n'.format(key, value))
+    stdout.write('}\n')
