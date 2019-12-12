@@ -1,8 +1,12 @@
-#!/usr/bin/env python3
+# -*- coding:utf-8 -*-
+# !/usr/bin/env python3
+
+"""The main parsing script."""
+
 
 import argparse
-from gendiff.generate_diff import generate_diff
 
+from gendiff.generate_diff import generate_diff
 
 
 def parse():
