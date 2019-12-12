@@ -10,11 +10,11 @@ import os
 def get_files(path_to_file):
     """Return from get_files the absolute path of the file.
 
-    Arguments:
-        path_to_file {string} -- The namepath to file.
+    Args:
+        path_to_file: The namepath to file.
 
     Returns:
-        string -- The absolute path to file.
+        string.
     """
     worked_files = [os.path.split(path_to_file)[-1]]
     path_to_file = ''
@@ -28,12 +28,12 @@ def get_files(path_to_file):
 def make_files(path_to_first_file, path_to_second_file):
     """Return a pair of paths.
 
-    Arguments:
-        path_to_first_file {string} -- Absolute path to the first file.
-        path_to_second_file {string} -- Absolute path to the second file.
+    Args:
+        path_to_first_file: Absolute path to the first file.
+        path_to_second_file: Absolute path to the second file.
 
     Returns:
-        dictionary
+        dictionary.
     """
     return {
         'after_file': json.load(open(path_to_first_file)),
@@ -44,11 +44,11 @@ def make_files(path_to_first_file, path_to_second_file):
 def get_first_file(files):
     """Return first file from files.
 
-    Arguments:
-        files {dictionary} -- a pair from make_files.
+    Args:
+        files: a pair from make_files.
 
     Returns:
-        json
+        json.
     """
     return files['before_file']
 
@@ -56,11 +56,11 @@ def get_first_file(files):
 def get_second_file(files):
     """Return second file from files.
 
-    Arguments:
-        files {dictionary} -- a pair from make_files.
+    Args:
+        files: a pair from make_files.
 
     Returns:
-        json
+        json.
     """
     return files['after_file']
 
@@ -68,11 +68,11 @@ def get_second_file(files):
 def get_common_keys(files):
     """Return a combined list of keys from two files.
 
-    Arguments:
-        files {dictionary} -- a pair from make_files.
+    Args:
+        files: a pair from make_files.
 
     Returns:
-        list
+        list.
     """
     common_file = get_first_file(files).copy()
     common_file.update(get_second_file(files))
@@ -82,12 +82,12 @@ def get_common_keys(files):
 def get_deleted_data(files, keys):
     """Return deleted data.
 
-    Arguments:
-        files {dictionary} -- a pair from make_files.
-        keys {list} -- combined list of keys from two files.
+    Args:
+        files: a pair from make_files.
+        keys: combined list of keys from two files.
 
     Returns:
-        dictionary
+        dictionary.
     """
     return {
         key:
@@ -103,12 +103,12 @@ def get_deleted_data(files, keys):
 def get_added_data(files, keys):
     """Return added data.
 
-    Arguments:
-        files {dictionary} -- a pair from make_files.
-        keys {list} -- combined list of keys from two files.
+    Args:
+        files: a pair from make_files.
+        keys: combined list of keys from two files.
 
     Returns:
-        dictionary
+        dictionary.
     """
     return {
         key:
@@ -125,11 +125,11 @@ def get_unchangeable_data(files, keys):
     """Return unchanged data.
 
     Arguments:
-        files {dictionary} -- a pair from make_files.
-        keys {list} -- combined list of keys from two files.
+        files: a pair from make_files.
+        keys: combined list of keys from two files.
 
     Returns:
-        dictionary
+        dictionary.
     """
     return {
         key:
@@ -145,12 +145,12 @@ def get_unchangeable_data(files, keys):
 def get_diff_data(files, kyes):
     """Return the difference of two files.
 
-    Arguments:
-        files {dictionary} -- a pair from make_files.
-        keys {list} -- combined list of keys from two files.]
+    Args:
+        files: a pair from make_files.
+        keys: combined list of keys from two files.
 
     Returns:
-        dictionary
+        dictionary.
     """
     unchangeable_data = get_unchangeable_data(files, kyes)
     deleted_data = get_deleted_data(files, kyes)
@@ -169,11 +169,11 @@ def get_diff_data(files, kyes):
 def convert_to_json(document):
     """Convert documet to json.
 
-    Arguments:
-        document {distionary} -- documet to convert.
+    Args:
+        document: documet to convert.
 
     Returns:
-        json
+        json.
     """
     return json.dumps(document, indent=2, separators=('', ': '))
 
@@ -181,12 +181,12 @@ def convert_to_json(document):
 def generate_diff(path_to_first_file, path_to_second_file):
     """Generate file differences into standart output stream.
 
-    Arguments:
-        path_to_first_file {string} -- Absolute path to the first file.
-        path_to_second_file {string} -- Absolute path to the second file.
+    Args:
+        path_to_first_file: Absolute path to the first file.
+        path_to_second_file: Absolute path to the second file.
 
     Returns:
-        json
+        json.
     """
     first_path = get_files(path_to_first_file)
     second_path = get_files(path_to_second_file)
