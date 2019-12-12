@@ -1,6 +1,7 @@
 *.egg-info
 __pycahe__/
 dist/
+.vscode/
 .idea/
 .python-version
 gendiff/__pycache__/
