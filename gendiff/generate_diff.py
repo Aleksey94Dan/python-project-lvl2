@@ -8,7 +8,8 @@ import os
 
 
 def get_files(path_to_file):
-    """Return from get_files the absolute path of the file.
+    """
+    Return from get_files the absolute path of the file.
 
     Args:
         path_to_file: The namepath to file.
@@ -26,7 +27,8 @@ def get_files(path_to_file):
 
 
 def make_files(path_to_first_file, path_to_second_file):
-    """Return a pair of paths.
+    """
+    Return a pair of paths.
 
     Args:
         path_to_first_file: Absolute path to the first file.
@@ -42,7 +44,8 @@ def make_files(path_to_first_file, path_to_second_file):
 
 
 def get_first_file(files):
-    """Return first file from files.
+    """
+    Return first file from files.
 
     Args:
         files: a pair from make_files.
@@ -54,7 +57,8 @@ def get_first_file(files):
 
 
 def get_second_file(files):
-    """Return second file from files.
+    """
+    Return second file from files.
 
     Args:
         files: a pair from make_files.
@@ -66,7 +70,8 @@ def get_second_file(files):
 
 
 def get_common_keys(files):
-    """Return a combined list of keys from two files.
+    """
+    Return a combined list of keys from two files.
 
     Args:
         files: a pair from make_files.
@@ -80,7 +85,8 @@ def get_common_keys(files):
 
 
 def get_deleted_data(files, keys):
-    """Return deleted data.
+    """
+    Return deleted data.
 
     Args:
         files: a pair from make_files.
@@ -101,7 +107,8 @@ def get_deleted_data(files, keys):
 
 
 def get_added_data(files, keys):
-    """Return added data.
+    """
+    Return added data.
 
     Args:
         files: a pair from make_files.
@@ -122,9 +129,10 @@ def get_added_data(files, keys):
 
 
 def get_unchangeable_data(files, keys):
-    """Return unchanged data.
+    """
+    Return unchanged data.
 
-    Arguments:
+    Args:
         files: a pair from make_files.
         keys: combined list of keys from two files.
 
@@ -143,11 +151,12 @@ def get_unchangeable_data(files, keys):
 
 
 def get_diff_data(files, kyes):
-    """Return the difference of two files.
+    """
+    Return the difference of two files.
 
     Args:
         files: a pair from make_files.
-        keys: combined list of keys from two files.
+        kyes: combined list of keys from two files.
 
     Returns:
         dictionary.
@@ -158,16 +167,21 @@ def get_diff_data(files, kyes):
     space, add, sub = ('  ', '+ ', '- ')
     diff_data = {}
     for key in kyes:
-        if len(deleted_data[key]) == 0:
+        if not deleted_data[key]:
             diff_data[space + key] = unchangeable_data[key][0]
-        else:
+        if deleted_data[key]:
             diff_data[add + key] = added_data[key][0]
             diff_data[sub + key] = deleted_data[key][0]
-    return {key: value for key, value in diff_data.items() if value}
+    return {
+        key_of_diff: value_of_diff
+        for key_of_diff, value_of_diff in diff_data.items()
+        if value_of_diff
+    }
 
 
 def convert_to_json(document):
-    """Convert documet to json.
+    """
+    Convert documet to json.
 
     Args:
         document: documet to convert.
@@ -179,7 +193,8 @@ def convert_to_json(document):
 
 
 def generate_diff(path_to_first_file, path_to_second_file):
-    """Generate file differences into standart output stream.
+    """
+    Generate file differences into standart output stream.
 
     Args:
         path_to_first_file: Absolute path to the first file.
