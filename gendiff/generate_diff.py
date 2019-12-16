@@ -150,7 +150,7 @@ def get_unchangeable_data(files, keys):
     }
 
 
-def get_diff_data(files, kyes):
+def get_diff_data(files, kyes):  # noqa: WPS210
     """
     Return the difference of two files.
 
