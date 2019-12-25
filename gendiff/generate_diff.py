@@ -5,6 +5,7 @@
 
 import json
 import os
+import sys
 
 
 def get_files(path_to_file):
@@ -200,11 +201,11 @@ def generate_diff(path_to_first_file, path_to_second_file):
         path_to_first_file: Absolute path to the first file.
         path_to_second_file: Absolute path to the second file.
 
-    Returns:
-        json.
     """
     first_path = get_files(path_to_first_file)
     second_path = get_files(path_to_second_file)
     files = make_files(first_path, second_path)
     keys = get_common_keys(files)
-    return convert_to_json(get_diff_data(files, keys)).replace('\"', '')
+    sys.stdout.write(
+        convert_to_json(get_diff_data(files, keys)).replace('\"', ''))
+    sys.stdout.write('\n')
