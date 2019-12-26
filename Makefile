@@ -1,5 +1,7 @@
 # Makefile
 install:
-		poetry install
+	poetry install
 lint:
-		poetry run flake8 gendiff
+	poetry run flake8 gendiff
+test:
+	poetry run pytest
