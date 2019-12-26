@@ -206,6 +206,4 @@ def generate_diff(path_to_first_file, path_to_second_file):
     second_path = get_files(path_to_second_file)
     files = make_files(first_path, second_path)
     keys = get_common_keys(files)
-    sys.stdout.write(
-        convert_to_json(get_diff_data(files, keys)).replace('\"', ''))
-    sys.stdout.write('\n')
+    return convert_to_json(get_diff_data(files, keys)).replace('\"', '')
