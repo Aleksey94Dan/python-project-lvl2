@@ -5,6 +5,7 @@
 
 
 import argparse
+import sys
 
 from gendiff.generate_diff import generate_diff
 
@@ -21,7 +22,8 @@ def parse():
     args = parser.parse_args()
     path1 = args.first_file
     path2 = args.second_file
-    generate_diff(path1, path2)
+    sys.stdout.write(generate_diff(path1, path2))
+    sys.stdout.write('\n')
 
 
 def main():
