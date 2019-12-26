@@ -7,3 +7,4 @@ dist/
 gendiff/__pycache__/
 gendiff/scripts/__pycache__/
 gendiff/src/__pycache__/
+gendiff/tests/__pycache__/
