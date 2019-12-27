@@ -7,7 +7,6 @@ install: make
 
 before_install:
   - pip install poetry
-  - pip install codeclimate-test-reporter
 
 intstall:
   - make install
@@ -17,12 +16,4 @@ script:
   - py.test --cov=gendiff
 
 after_success:
-<<<<<<< HEAD
-<<<<<<< HEAD
-  - ./cc-test-reporter after-build --exit-code $TRAVIS_TEST_RESULT
-=======
   - codeclimate-test-reporter --file .coverage
->>>>>>> 7296f058add387a9cfa62d77b6645d7f3e41408f
-=======
-  - codeclimate-test-reporter --file .coverage
->>>>>>> 7296f058add387a9cfa62d77b6645d7f3e41408f
