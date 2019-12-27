@@ -7,18 +7,14 @@ install: make
 
 before_install:
   - pip install poetry
+  - pip install codeclimate-test-reporter
 
 intstall:
   - make install
 
-before_script:
-  - curl -L https://codeclimate.com/downloads/test-reporter/test-reporter-latest-linux-amd64 > ./cc-test-reporter
-  - chmod +x ./cc-test-reporter
-  - ./cc-test-reporter before-build
-
 script:
   - make lint
-  - make test
+  - py.test --cov=gendiff tests
 
 after_success:
-  - ./cc-test-reporter --coverage after-build --exit-code $TRAVIS_TEST_RESULT
+  - codeclimate-test-reporter --file .coverage
