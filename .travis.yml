@@ -14,7 +14,7 @@ intstall:
 
 script:
   - make lint
-  - py.test --cov=gendiff tests
+  - py.test --cov=gendiff
 
 after_success:
   - codeclimate-test-reporter --file .coverage
