@@ -580,7 +580,7 @@ coverage = ">=3.7.1"
 pytest = ">=2.6.0"
 
 [[package]]
-category = "dev"
+category = "main"
 description = "YAML parser and emitter for Python"
 name = "pyyaml"
 optional = false
@@ -744,7 +744,7 @@ version = "0.6.0"
 more-itertools = "*"
 
 [metadata]
-content-hash = "a7457e1ac1ea3b7ccfb5727115b9ae1b7295b29362a6941403cd5538094a0bfd"
+content-hash = "7b63b6526ef3c9290f4427752c926bb91dd02c2210bd56a0f66832f47235a082"
 python-versions = "^3.7"
 
 [metadata.hashes]
