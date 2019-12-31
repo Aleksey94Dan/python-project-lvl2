@@ -1,6 +1,5 @@
 env:
-  global:
-    - CC_TEST_REPORTER_ID=731e43fe228803cef21638ab8e062d30f47a64ce52bfaa1deeef5ba63567296e
+  - CODECLIMATE_REPO_TOKEN=4567216710d386622d5910eed8485d56e5f22a894707fece56c0bbbdcbe513ed
 language: python
 python: 3.7
 
@@ -12,15 +11,9 @@ before_install:
 intstall:
   - make install
 
-before_script:
-  - curl -L https://codeclimate.com/downloads/test-reporter/test-reporter-latest-linux-amd64 > ./cc-test-reporter
-  - chmod +x ./cc-test-reporter
-  - ./cc-test-reporter before-build
-
 script:
   - make lint
-  - make test
+  - py.test --cov=gendiff
 
-after_script:
-  - ./cc-test-reporter after-build --exit-code $TRAVIS_TEST_RESULT
-
+after_success:
+  - codeclimate-test-reporter --file .coverage

@@ -9,11 +9,14 @@ packages = [
 
 [tool.poetry.dependencies]
 python = "^3.7"
+PyYAML = "^5.2"
 
 [tool.poetry.dev-dependencies]
 pytest = "^5.3"
 wemake-python-styleguide = "^0.13.2"
-pytest-cov = "^2.8"
+codeclimate-test-reporter = "^0.2.3"
+pytest-cov = "=2.4.0"
+coverage = "=4.3.4"
 
 [[tool.poetry.source]]
 name = "test"
