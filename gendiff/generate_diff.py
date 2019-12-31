@@ -4,9 +4,9 @@
 
 
 import json
-import yaml
 import os
 import sys
+import yaml
 
 
 def get_files(path_to_file):
@@ -16,14 +16,23 @@ def get_files(path_to_file):
         for document in files:
             if document in worked_files:
                 path_to_file = os.path.join(root, document)
-    return path_to_file
+    extension = path_to_file.split('.')[-1]
+    return path_to_file, extension
 
 
 def make_files(path_to_first_file, path_to_second_file):
-    return {
-        'after_file': json.load(open(path_to_first_file)),
-        'before_file': json.load(open(path_to_second_file)),
-    }
+    first_file, extension_first_file = get_files(path_to_first_file)
+    second_file, extension_second_file = get_files(path_to_second_file)
+    if extension_first_file == 'json' and extension_second_file == 'json':
+        return {
+            'after_file': json.load(open(path_to_first_file)),
+            'before_file': json.load(open(path_to_second_file)),
+        }
+    elif extension_first_file == 'yaml' and extension_second_file == 'yaml':
+        return{
+            'after_file': yaml.load(open(path_to_first_file), Loader=yaml.FullLoader),
+            'before_file': yaml.load(open(path_to_second_file), Loader=yaml.FullLoader),
+        }
 
 
 def get_first_file(files):
@@ -100,8 +109,8 @@ def convert_to_json(document):
 
 
 def generate_diff(path_to_first_file, path_to_second_file):
-    first_path = get_files(path_to_first_file)
-    second_path = get_files(path_to_second_file)
-    files = make_files(first_path, second_path)
+    files = make_files(path_to_first_file, path_to_second_file)
     keys = get_common_keys(files)
+    sys.stdout.write(convert_to_json(get_diff_data(files, keys)).replace('\"', ''))
+    sys.stdout.write('\n')
     return convert_to_json(get_diff_data(files, keys)).replace('\"', '')

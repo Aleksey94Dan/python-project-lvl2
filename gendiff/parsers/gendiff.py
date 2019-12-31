@@ -14,6 +14,4 @@ def parse():
     parser.add_argument('second_file', type=str)
     parser.add_argument('-f', '--format', type=str, help='set format of output')
     args = parser.parse_args()
-    path1 = args.first_file
-    path2 = args.second_file
-    return path1, path2
+    return args.first_file, args.second_file
