@@ -114,3 +114,15 @@ def generate_diff(path_to_first_file, path_to_second_file):
     sys.stdout.write(convert_to_json(get_diff_data(files, keys)).replace('\"', ''))
     sys.stdout.write('\n')
     return convert_to_json(get_diff_data(files, keys)).replace('\"', '')
+
+
+
+def main():
+    files = make_files('/home/aleksey/HEXLET_ROOT/python-project-lvl2/gendiff/for_experiment/after1.json', '/home/aleksey/HEXLET_ROOT/python-project-lvl2/gendiff/for_experiment/after1.json')
+    keys = get_common_keys(files)
+    get_diff_data(files, keys)
+    print(keys)
+
+
+if __name__ == "__main__":
+    main()

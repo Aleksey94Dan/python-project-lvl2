@@ -17,6 +17,7 @@ codeclimate-test-reporter = "^0.2.3"
 pytest-cov = "=2.4.0"
 coverage = "=4.3.4"
 PyYAML = "^5.2"
+pylint = "^2.4"
 
 [[tool.poetry.source]]
 name = "test"
