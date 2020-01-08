@@ -1,13 +1,20 @@
 # -*- coding:utf-8 -*-
 
-
 """The module describes the rules for building nodes."""
 
 
-def AST_builder(before_file, after_file):
-    common_keys = list(after_file.keys() | before_file.keys())
-    return {key: get_node(before_file, after_file, key) for key in common_keys}
+def create_ast(before_file, after_file):
+    """Build an abstract syntax tree.
 
+    Arguments:
+        before_file: first file to compare.
+        after_file: second file to compare.
+
+    Returns:
+        dict.
+    """
+    common_keys = list(before_file.keys() | after_file.keys())
+    return {key: get_node(before_file, after_file, key) for key in common_keys}
 
 
 def get_node(before_file, after_file, key):  # noqa: WPS231
@@ -21,8 +28,8 @@ def get_node(before_file, after_file, key):  # noqa: WPS231
     Returns:
         dict.
     """
-    before = before_file.get(key)
-    after = after_file.get(key)
+    before = before_file.setdefault(key, None)
+    after = after_file.setdefault(key, None)
 
     if before is None:  # noqa: WPS223
         return {
@@ -40,7 +47,7 @@ def get_node(before_file, after_file, key):  # noqa: WPS231
         return {
             'type': 'PARRENT',
             'key': key,
-            'child': AST_builder(before, after),
+            'child': create_ast(before, after),
         }
     elif before == after:
         return {
@@ -55,51 +62,3 @@ def get_node(before_file, after_file, key):  # noqa: WPS231
             'before_value': before,
             'after_value': after,
         }
-
-a = {
-    "common": {
-      "setting1": "Value 1",
-      "setting3": True,
-      "setting4": "blah blah",
-      "setting5": {
-        "key5": "value5"
-      }
-    },
-
-    "group1": {
-      "foo": "bar",
-      "baz": "bars"
-    },
-
-    "group3": {
-      "fee": "100500"
-    }
-  }
-
-b = {
-    "common": {
-      "setting1": "Value 1",
-      "setting2": "200",
-      "setting3": True,
-      "setting6": {
-        "key": "value"
-      }
-    },
-    "group1": {
-      "baz": "bas",
-      "foo": "bar"
-    },
-    "group2": {
-      "abc": "12345"
-    }
-  }
-
-
-
-
-def main():
-    print(AST_builder(a, b))
-
-
-if __name__ == "__main__":
-    main()

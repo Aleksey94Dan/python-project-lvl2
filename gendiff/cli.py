@@ -2,7 +2,7 @@
 
 """Interface for working with a pair of files."""
 
-from gendiff.reader import get_data_from_file
+from reader import get_data_from_file
 
 
 def make_files(path_to_before_file, path_to_after_file):  # noqa: WPS210
