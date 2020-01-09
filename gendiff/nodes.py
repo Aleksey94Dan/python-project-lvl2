@@ -14,7 +14,7 @@ def create_ast(before_file, after_file):
         dict.
     """
     common_keys = list(before_file.keys() | after_file.keys())
-    return {key: get_node(before_file, after_file, key) for key in common_keys}
+    return {key: get_node(before_file, after_file, key) for key in sorted(common_keys)}
 
 
 def get_node(before_file, after_file, key):  # noqa: WPS231
@@ -33,15 +33,15 @@ def get_node(before_file, after_file, key):  # noqa: WPS231
 
     if before is None:  # noqa: WPS223
         return {
-            'type': 'ADDED',
+            'type': 'DELETED',
             'key': key,
-            'value': after,
+            'value': check_type_value_node(after),
         }
     elif after is None:
         return {
-            'type': 'DELETED',
+            'type': 'ADDED',
             'key': key,
-            'value': before,
+            'value': check_type_value_node(before),
         }
     elif isinstance(before, dict) and isinstance(after, dict):
         return {
@@ -53,12 +53,28 @@ def get_node(before_file, after_file, key):  # noqa: WPS231
         return {
             'type': 'UNCHANGEABLE',
             'key': key,
-            'value': after,
+            'value': check_type_value_node(after),
         }
     elif before != after:
         return {
             'type': 'CHANGEABLE',
             'key': key,
-            'before_value': before,
-            'after_value': after,
+            'before_value': check_type_value_node(before),
+            'after_value': check_type_value_node(after),
         }
+
+
+def check_type_value_node(value_node):
+    """Check sheet value type.
+
+    Args:
+        value_node: sheet value.
+
+    Returns:
+        value_node
+    """
+    if value_node is True:
+        return 'true'
+    if value_node is False:
+        return 'false'
+    return value_node
