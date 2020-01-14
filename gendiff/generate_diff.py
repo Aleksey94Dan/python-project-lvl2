@@ -8,24 +8,33 @@ import json
 from cli import make_files, get_after_data, get_before_data
 from nodes import create_ast
 
-def formatter(ast, key):
-    if ast[key]['type'] is 'ADDED':
-        return {'+ {}'.format(key): ast[key]['value']}
-    elif ast[key]['type'] is 'DELETED':
-        return {'- {}'.format(key): ast[key]['value']}
-    elif ast[key]['type'] is 'UNCHANGEABLE':
-        return {key: ast[key]['value']}
-    elif ast[key]['type'] is 'CHANGEABLE':
-        return {key: {"-":ast[key]['before_value'], "+":ast[key]['after_value']}}
-    elif ast[key]['type'] is 'PARRENT':
-        return gene_visit(ast[key]['child'])
 
-def gene_visit(ast):
-    keys = sorted(list(ast.keys()))
-    return {key: formatter(ast, key) for key in keys}
-
+def formatter(tree, key):
+    if tree[key]["Identifier"] == "ADDED":
+        return {'+ ' + key: tree[key]["Value"]}
+    elif tree[key]["Identifier"] == "DELETED":
+        return {'- ' + key: tree[key]["Value"]}
+    elif tree[key]["Identifier"] == "CHANGEABLE":
+        return {'+ ' + key: tree[key]["After_value"],
+                '- ' + key: tree[key]["Before_value"],
+        }
+    elif tree[key]["Identifier"] == "UNCHANGEABLE":
+        return {'  ' + key: tree[key]["Value"]}
+    elif tree[key]["Identifier"] == "PARENT":
+        return {key: generate_visit(tree[key]["Child"])}
 
 
+def generate_visit(data):
+    keys = list(data.keys())
+    a = []
+    for key in keys:
+        a.append(formatter(data, key))
+    return a
+
+
+def printer(data):
+    a = json.dumps(data, indent=4).replace('[', '')
+    print(a)
 
 
 if __name__ == "__main__":
@@ -34,29 +43,15 @@ if __name__ == "__main__":
     before = get_before_data(files)
     after = get_after_data(files)
     ast = create_ast(before, after)
-    # print(files)
-    # print()
-    # print(before)
-    # print()
-    # print(after)
-    # print()
-    # print(json.dumps(ast, indent=4))
-    # print()
-    # print(json.dumps(ast, indent=4))
+    # print(json.dumps(ast, indent=2))
     print()
-    # keys = sorted(list(ast.keys()))
-    # print(keys)
-    # # d = {}
-    # if ast['group3']['type'] is "ADDED":
-    #     d[' + group3'] = ast['group3']["value"]
-    # if ast['group2']['type'] is "DELETED":
-    #     d[' - group2'] = ast['group2']["value"]
-    # print(gene_visit(ast))
-    # print(formatter(ast, 'group1'))
-    # print(formatter(ast, 'group2'))
-    # print(formatter(ast, 'group3'))
-    # print(formatter(ast, 'common'))
-    print(json.dumps(gene_visit(ast), indent=4))
-    # print(ast['group1']['child'])
+    printer(generate_visit(ast))
 
-
+    # files = make_files('gendiff/tests/fixtures/after.json',
+    # 'gendiff/tests/fixtures/before.json')
+    # before = get_before_data(files)
+    # after = get_after_data(files)
+    # ast = create_ast(before, after)
+    # printer(generate_visit(ast))
+    # # pp = pprint.PrettyPrinter(indent=4)
+    # # pp.pprint(generate_visit(ast))

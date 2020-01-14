@@ -33,34 +33,34 @@ def get_node(before_file, after_file, key):  # noqa: WPS231
 
     if before is None:  # noqa: WPS223
         return {
-            'type': 'DELETED',
-            'key': key,
-            'value': check_type_value_node(after),
+            'Identifier': 'DELETED',
+            'Key': key,
+            'Value': check_type_value_node(after),
         }
     elif after is None:
         return {
-            'type': 'ADDED',
-            'key': key,
-            'value': check_type_value_node(before),
+            'Identifier': 'ADDED',
+            'Key': key,
+            'Value': check_type_value_node(before),
         }
     elif isinstance(before, dict) and isinstance(after, dict):
         return {
-            'type': 'PARRENT',
-            'key': key,
-            'child': create_ast(before, after),
+            'Identifier': 'PARENT',
+            'Key': key,
+            'Child': create_ast(before, after),
         }
     elif before == after:
         return {
-            'type': 'UNCHANGEABLE',
-            'key': key,
-            'value': check_type_value_node(after),
+            'Identifier': 'UNCHANGEABLE',
+            'Key': key,
+            'Value': check_type_value_node(after),
         }
     elif before != after:
         return {
-            'type': 'CHANGEABLE',
-            'key': key,
-            'before_value': check_type_value_node(before),
-            'after_value': check_type_value_node(after),
+            'Identifier': 'CHANGEABLE',
+            'Key': key,
+            'Before_value': check_type_value_node(before),
+            'After_value': check_type_value_node(after),
         }
 
 
@@ -78,3 +78,7 @@ def check_type_value_node(value_node):
     if value_node is False:
         return 'false'
     return value_node
+
+
+
+
