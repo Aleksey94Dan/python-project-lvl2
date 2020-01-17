@@ -1,10 +1,8 @@
 # -*- coding:utf-8 -*-
 # !/usr/bin/env python3
-import pprint
-import json
 
 """Interface for calculating the difference of two files."""
-
+import json
 from cli import make_files, get_after_data, get_before_data
 from nodes import create_ast
 
@@ -26,15 +24,11 @@ def formatter(tree, key):
 
 def generate_visit(data):
     keys = list(data.keys())
-    a = []
+    a = {}
     for key in keys:
-        a.append(formatter(data, key))
+        a.update(formatter(data, key))
     return a
 
-
-def printer(data):
-    a = json.dumps(data, indent=4).replace('[', '')
-    print(a)
 
 
 if __name__ == "__main__":
@@ -43,15 +37,14 @@ if __name__ == "__main__":
     before = get_before_data(files)
     after = get_after_data(files)
     ast = create_ast(before, after)
-    # print(json.dumps(ast, indent=2))
     print()
-    printer(generate_visit(ast))
-
-    # files = make_files('gendiff/tests/fixtures/after.json',
-    # 'gendiff/tests/fixtures/before.json')
-    # before = get_before_data(files)
-    # after = get_after_data(files)
-    # ast = create_ast(before, after)
-    # printer(generate_visit(ast))
-    # # pp = pprint.PrettyPrinter(indent=4)
-    # # pp.pprint(generate_visit(ast))
+    print(json.dumps(generate_visit(ast), indent=4))
+    print()
+    print()
+    files = make_files('gendiff/tests/fixtures/after.json',
+    'gendiff/tests/fixtures/before.json')
+    before = get_before_data(files)
+    after = get_after_data(files)
+    ast = create_ast(before, after)
+    print()
+    print(json.dumps(generate_visit(ast), indent=4))
