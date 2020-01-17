@@ -2,21 +2,17 @@
 
 """Interface for working with a pair of files."""
 
-from reader import get_data_from_file
 
-
-def make_files(path_to_before_file, path_to_after_file):  # noqa: WPS210
+def make_files(before_file, after_file):  # noqa: WPS210
     """Create a pair of input files.
 
     Args:
-        path_to_before_file: {tuple(str, str)}.
-        path_to_after_file: {tuple(str, str)}.
+        before_file: file before change.
+        after_file: file after change.
 
     Returns:
         dict.
     """
-    before_file = get_data_from_file(path_to_before_file)
-    after_file = get_data_from_file(path_to_after_file)
     return {
         'before_file': before_file,
         'after_file': after_file,

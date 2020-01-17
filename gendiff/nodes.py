@@ -3,7 +3,7 @@
 """The module describes the rules for building nodes."""
 
 
-def create_ast(before_file, after_file):
+def generate_ast(before_file, after_file):
     """Build an abstract syntax tree.
 
     Arguments:
@@ -13,8 +13,8 @@ def create_ast(before_file, after_file):
     Returns:
         dict.
     """
-    common_keys = list(before_file.keys() | after_file.keys())
-    return {key: get_node(before_file, after_file, key) for key in sorted(common_keys)}
+    common_keys = sorted(list(before_file.keys() | after_file.keys()))
+    return {key: get_node(before_file, after_file, key) for key in common_keys}
 
 
 def get_node(before_file, after_file, key):  # noqa: WPS231
@@ -33,13 +33,13 @@ def get_node(before_file, after_file, key):  # noqa: WPS231
 
     if before is None:  # noqa: WPS223
         return {
-            'Identifier': 'DELETED',
+            'Identifier': 'ADDED',
             'Key': key,
             'Value': check_type_value_node(after),
         }
     elif after is None:
         return {
-            'Identifier': 'ADDED',
+            'Identifier': 'DELETED',
             'Key': key,
             'Value': check_type_value_node(before),
         }
@@ -47,7 +47,7 @@ def get_node(before_file, after_file, key):  # noqa: WPS231
         return {
             'Identifier': 'PARENT',
             'Key': key,
-            'Child': create_ast(before, after),
+            'Child': generate_ast(before, after),
         }
     elif before == after:
         return {
@@ -78,7 +78,3 @@ def check_type_value_node(value_node):
     if value_node is False:
         return 'false'
     return value_node
-
-
-
-
