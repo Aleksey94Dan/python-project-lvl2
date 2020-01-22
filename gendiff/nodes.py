@@ -13,7 +13,7 @@ def generate_ast(before_file, after_file):
     Returns:
         dict.
     """
-    common_keys = sorted(list(before_file.keys() | after_file.keys()))
+    common_keys = list(before_file.keys() | after_file.keys())
     return {key: get_node(before_file, after_file, key) for key in common_keys}
 
 
