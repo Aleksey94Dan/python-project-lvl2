@@ -1,5 +1,8 @@
-*.egg-info
-__pycahe__
+
+__pycache__/
+.vscode/
+.pytest_cache/
 dist/
-.idea/
-.python-version
+
+
+*.egg-info
