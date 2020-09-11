@@ -15,7 +15,8 @@ EXTENSIONS = {
 }.get
 
 
-def _get_data_from_file(path):
+def get_data_from_file(path):
+    """Get data on the specified path."""
     path_to_file = os.path.abspath(path)
     extension = os.path.splitext(path_to_file)[-1]
     if not EXTENSIONS(extension):
@@ -32,8 +33,8 @@ def parse():
         prog='gendiff',
         description='Generate diff',
         )
-    parser.add_argument('first_file', type=_get_data_from_file)
-    parser.add_argument('second_file', type=_get_data_from_file)
+    parser.add_argument('first_file', type=get_data_from_file)
+    parser.add_argument('second_file', type=get_data_from_file)
     parser.add_argument(
         '-f',
         '--format',
