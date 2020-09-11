@@ -1,9 +1,6 @@
 # -*- coding:utf-8 -*-
 
 """Init package."""
-# -*- coding:utf-8 -*-
-
-"""Init package."""
 ADDED = 'added'
 DELETED = 'deleted'
 UNCHANGEABLE = 'unchangeable'

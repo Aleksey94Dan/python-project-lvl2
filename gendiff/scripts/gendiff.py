@@ -1,4 +1,5 @@
 # !/usr/bin/env python3
+
 # -*- coding:utf-8 -*-
 
 """The main parsing script."""
@@ -14,4 +15,3 @@ def main():
 
 if __name__ == '__main__':
     main()
-
