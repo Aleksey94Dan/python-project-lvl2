@@ -27,6 +27,26 @@ def mknode(name, status=None, children=None, value=None):  # noqa: WPS110
     }
 
 
+def get_children(node):
+    """Return children of node."""
+    return node.get(CHILDREN)
+
+
+def get_name(node):
+    """Retrun name of node."""
+    return node.get(NAME)
+
+
+def get_value(node):
+    """Return value of node."""
+    return node.get(VALUE)
+
+
+def get_status(node):
+    """Return status of node."""
+    return node.get(STATUS)
+
+
 def mkast(before_file, after_file, acc=None):  # noqa: WPS210
     """Rerurn an abstract syntax tree."""
     if acc is None:

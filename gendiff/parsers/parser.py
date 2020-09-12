@@ -1,7 +1,7 @@
 # -*- coding:utf-8 -*-
 
 """Parser for command-line options,arguments and extenstions."""
-
+from gendiff.format.default import pretty_print
 import argparse
 import json
 import os
@@ -39,7 +39,7 @@ def parse():
         '-f',
         '--format',
         # default=,  # noqa: T002
-        # type=,
+        type=pretty_print,
         help='set format of output',
     )
     parser.parse_args()
