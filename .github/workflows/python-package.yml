@@ -11,7 +11,8 @@ on:
 
 jobs:
   build:
-
+    env:
+      CODECLIMATE_REPO_TOKEN: 4567216710d386622d5910eed8485d56e5f22a894707fece56c0bbbdcbe513ed 
     runs-on: ubuntu-latest
     strategy:
       matrix:
@@ -34,3 +35,5 @@ jobs:
     - name: Test with pytest
       run: |
         make test
+    
+              
