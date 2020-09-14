@@ -49,8 +49,7 @@ def get_status(node):
 
 def mkast(before_file, after_file, acc=None):  # noqa: WPS210
     """Rerurn an abstract syntax tree."""
-    if acc is None:
-        acc = []
+    acc = acc if acc else []
 
     keys_before_change = set(before_file.keys())
     keys_after_cnange = set(after_file.keys())
