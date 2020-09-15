@@ -17,7 +17,7 @@ from gendiff import (
 )
 
 
-def mknode(name, status=None, children=None, value=None):
+def mknode(name, status=None, children=None, value=None):  # noqa: WPS110
     """Return node."""
     return {
         NAME: name,

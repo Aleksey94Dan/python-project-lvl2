@@ -2,8 +2,8 @@
 
 """Test for building AST."""
 
-from gendiff.nodes import mkast, mknode
-from gendiff.parsers.parser import get_data_from_file
+from gendiff.nodes import mknode, mkast
+from gendiff.parsers import get_data_from_file
 from gendiff import (
     ADDED,
     CHANGEABLE,
@@ -18,20 +18,20 @@ from gendiff import (
 
 def test_flat_mkast():
     """Flat file testing."""
-    filename_json1 = './tests/fixtures/file1.json'
-    filename_json2 = './tests/fixtures/file2.json'
-  
+    filename1 = './tests/fixtures/file1.json'
+    filename2 = './tests/fixtures/file2.json'
+
     actuall_json = mkast(
-        get_data_from_file(filename_json1),
-        get_data_from_file(filename_json1),
+        get_data_from_file(filename1),
+        get_data_from_file(filename2),
     )
-    
-    filename_yml1 = './tests/fixtures/file1.yml'
-    filename_yml2 = './tests/fixtures/file2.yml'
-    
+
+    filename1 = './tests/fixtures/file1.yml'
+    filename2 = './tests/fixtures/file2.yml'
+
     actuall_yml = mkast(
-        get_data_from_file(filename_yml1),
-        get_data_from_file(filename_yml2),
+        get_data_from_file(filename1),
+        get_data_from_file(filename2),
     )
 
     expectation = mknode(

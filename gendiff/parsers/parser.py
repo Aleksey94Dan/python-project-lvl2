@@ -1,12 +1,13 @@
 # -*- coding:utf-8 -*-
 
 """Parser for command-line options,arguments and extenstions."""
-from gendiff.format.default import pretty_print
 import argparse
 import json
 import os
 
 import yaml
+
+from gendiff.format.default import pretty_print
 
 EXTENSIONS = {
     '.json': json.load,
@@ -32,7 +33,7 @@ def parse():
     parser = argparse.ArgumentParser(
         prog='gendiff',
         description='Generate diff',
-        )
+    )
     parser.add_argument('first_file', type=get_data_from_file)
     parser.add_argument('second_file', type=get_data_from_file)
     parser.add_argument(

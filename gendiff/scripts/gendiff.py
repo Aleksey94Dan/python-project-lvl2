@@ -1,11 +1,11 @@
-# !/usr/bin/env python3
+# !/usr/bin/env python3  # noqa: C101
 
 # -*- coding:utf-8 -*-
 
 """The main parsing script."""
 
 
-from gendiff.parsers.parser import parse
+from gendiff.parsers import parse
 
 
 def main():
