@@ -18,12 +18,22 @@ from gendiff import (
 
 def test_flat_mkast():
     """Flat file testing."""
-    filename1 = './tests/fixtures/file1.json'
-    filename2 = './tests/fixtures/file2.json'
-    actuall = mkast(
-        get_data_from_file(filename1),
-        get_data_from_file(filename2),
+    filename_json1 = './tests/fixtures/file1.json'
+    filename_json2 = './tests/fixtures/file2.json'
+  
+    actuall_json = mkast(
+        get_data_from_file(filename_json1),
+        get_data_from_file(filename_json1),
     )
+    
+    filename_yml1 = './tests/fixtures/file1.yml'
+    filename_yml2 = './tests/fixtures/file2.yml'
+    
+    actuall_yml = mkast(
+        get_data_from_file(filename_yml1),
+        get_data_from_file(filename_yml2),
+    )
+
     expectation = mknode(
         name='root',
         children=[
@@ -58,4 +68,5 @@ def test_flat_mkast():
         key=lambda name_of_key: name_of_key[NAME],
         reverse=False,
     )
-    assert expectation == actuall  # noqa: S101
+    assert expectation == actuall_json  # noqa: S101
+    assert expectation == actuall_yml  # noqa: S101
