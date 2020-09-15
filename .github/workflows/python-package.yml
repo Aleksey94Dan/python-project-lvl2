@@ -11,8 +11,6 @@ on:
 
 jobs:
   build:
-    env:
-      CODECLIMATE_REPO_TOKEN: 4567216710d386622d5910eed8485d56e5f22a894707fece56c0bbbdcbe513ed 
     runs-on: ubuntu-latest
     strategy:
       matrix:
@@ -32,8 +30,15 @@ jobs:
     - name: Linter check
       run: |
         make lint
-    - name: Test with pytest
+    - name: test
       run: |
         make test
+    - name: Velocity deploy action
+      uses: codeclimate/velocity-deploy-action@v1.0.0
+      with:
+         CODECLIMATE_REPO_TOKEN: 4567216710d386622d5910eed8485d56e5f22a894707fece56c0bbbdcbe513ed
+     
+
+         
     
               
