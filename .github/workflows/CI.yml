@@ -23,24 +23,30 @@ jobs:
       - uses: actions/setup-python@master
         with:
           python-version: ${{ matrix.python-version }}
-        
-       
-    - name: Install dependencies
-      run: |
-        python -m pip install --upgrade pip
-        pip install poetry
-        make install
-    - name: Linter check
-      run: |
-        make lint
-    - name: test
-      run: |
-        make test
-    - name: Velocity deploy action
-      uses: codeclimate/velocity-deploy-action@v1.0.0
-      with:
-         CODECLIMATE_REPO_TOKEN: 4567216710d386622d5910eed8485d56e5f22a894707fece56c0bbbdcbe513ed
-     
+      - run: python -m pip install --upgrade pip
+      - run: pip install poetry
+      - run: make install
+      - run: make lint
+      - run: make test
+  coverage:
+    needs: [ test ]
+    name: coverage
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@master
+      - uses: actions/setup-python@master
+        with:
+          python-version: '3.7'
+      - run: python -m pip install --upgrade pip
+      - run: pip install poetry
+      - run: make install
+      - uses: paambaati/codeclimate-action@v2.5.7
+        env:
+          CC_TEST_REPORTER_ID: ${{ secrets.CC_TEST_REPORTER_ID}}
+        with:
+          coverageCommand: codeclimate-test-reporter --file .coverage
+          debug: true   
+
 
          
     
