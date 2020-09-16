@@ -33,7 +33,7 @@ def get_children(node):
 
 
 def get_name(node):
-    """Retrun name of node."""
+    """Return name of node."""
     return node.get(NAME)
 
 
