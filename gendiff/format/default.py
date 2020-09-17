@@ -12,16 +12,16 @@ from gendiff import (
 )
 
 
-def pretty_print(tree):
+def pretty_print(tree):  # noqa: D103, WPS210, WPS231
     children = get_children(tree)
-    string = "{\n"
+    string = '{\n'
     for child in children:
         name = get_name(child)
-        value = get_value(child)
+        value = get_value(child)  # noqa: WPS110
         status = get_status(child)
 
         if isinstance(value, bool):
-            value = str(value).lower()
+            value = str(value).lower()  # noqa: WPS110
 
         if status is ADDED:
             string = string + '  + {0}:{1}\n'.format(name, value)
@@ -34,5 +34,5 @@ def pretty_print(tree):
             new_value = value.get(NEW_VALUE)
             string = string + '  - {0}:{1}\n'.format(name, old_value)
             string = string + '  + {0}:{1}\n'.format(name, new_value)
-    string = string + '}'
+    string = string + '}'  # noqa: WPS336
     return string

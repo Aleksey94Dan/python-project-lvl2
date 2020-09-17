@@ -1,7 +1,7 @@
 install:
 	@poetry install
 test:
-	poetry run pytest --cov=gendif
+	poetry run pytest --cov=gendiff
 lint:
 	poetry run flake8 gendiff
 check:
