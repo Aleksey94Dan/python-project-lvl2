@@ -28,3 +28,8 @@ jobs:
           make check
           make lint
           make test
+      - name: Upload  coverage to Codeclimate
+        uses: paambaati/codeclimate-action@v2.6.0
+        with:
+          token: ${{ secrets.CC_TEST_REPORTER_ID }}
+          file: .coverage
