@@ -30,6 +30,8 @@ jobs:
           make test
       - name: Upload  coverage to Codeclimate
         uses: paambaati/codeclimate-action@v2.6.0
+        env:
+          CC_TEST_REPORTER_ID: 4567216710d386622d5910eed8485d56e5f22a894707fece56c0bbbdcbe513ed
         with:
-          token: ${{ secrets.CC_TEST_REPORTER_ID }}
-          file: .coverage
+          coverageCommand: npm run coverage
+          debug: true
