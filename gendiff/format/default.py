@@ -2,7 +2,14 @@
 
 """The template for default formatting."""
 from gendiff.nodes import get_children, get_name, get_value, get_status
-from gendiff import UNCHANGEABLE, CHANGEABLE, ADDED, DELETED, OLD_VALUE, NEW_VALUE
+from gendiff import (
+    UNCHANGEABLE,
+    CHANGEABLE,
+    ADDED,
+    DELETED,
+    OLD_VALUE,
+    NEW_VALUE,
+)
 
 
 def pretty_print(tree):
@@ -17,15 +24,15 @@ def pretty_print(tree):
             value = str(value).lower()
 
         if status is ADDED:
-            string = string + "  + {0}:{1}\n".format(name, value)
+            string = string + '  + {0}:{1}\n'.format(name, value)
         elif status is DELETED:
-            string = string + "  - {0}:{1}\n".format(name, value)
+            string = string + '  - {0}:{1}\n'.format(name, value)
         elif status is UNCHANGEABLE:
-            string = string + "    {0}:{1}\n".format(name, value)
+            string = string + '    {0}:{1}\n'.format(name, value)
         elif status is CHANGEABLE:
             old_value = value.get(OLD_VALUE)
             new_value = value.get(NEW_VALUE)
-            string = string + "  - {0}:{1}\n".format(name, old_value)
-            string = string + "  + {0}:{1}\n".format(name, new_value)
-    string = string + "}"
+            string = string + '  - {0}:{1}\n'.format(name, old_value)
+            string = string + '  + {0}:{1}\n".format(name, new_value)
+    string = string + '}'
     return string
