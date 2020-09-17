@@ -25,3 +25,5 @@ jobs:
       - name: Run linter and pytest
         run: |
           make check
+          make lint
+          make test
