@@ -33,6 +33,9 @@ jobs:
         env:
           CC_TEST_REPORTER_ID: 4567216710d386622d5910eed8485d56e5f22a894707fece56c0bbbdcbe513ed
         with:
-          coverageCommand: make test
+          coverageCommand: |
+            ./cc-test-reporter before-build
+            make test
+            ./cc-test-reporter after-build -t coverage.py
           debug: True
             
