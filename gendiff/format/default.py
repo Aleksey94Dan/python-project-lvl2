@@ -33,6 +33,6 @@ def pretty_print(tree):
             old_value = value.get(OLD_VALUE)
             new_value = value.get(NEW_VALUE)
             string = string + '  - {0}:{1}\n'.format(name, old_value)
-            string = string + '  + {0}:{1}\n".format(name, new_value)
+            string = string + '  + {0}:{1}\n'.format(name, new_value)
     string = string + '}'
     return string
