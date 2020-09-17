@@ -4,10 +4,8 @@ test:
 	poetry run pytest --cov=gendif
 lint:
 	poetry run flake8 gendiff
-selfcheck:
-	poetry check
 check:
-	selfcheck test lint
-build: check
+	poetry check
+build:
 	@poetry build
-.PHONY: install test lint selfcheck build
+.PHONY: install test lint check build
