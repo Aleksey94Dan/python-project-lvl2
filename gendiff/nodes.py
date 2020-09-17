@@ -98,4 +98,4 @@ def mkast(before_file, after_file, acc=None):  # noqa: WPS210
             ),
         )
     acc.sort(key=lambda name_of_key: name_of_key[NAME], reverse=False)
-    return mknode(name='root', children=acc)
+    return acc
