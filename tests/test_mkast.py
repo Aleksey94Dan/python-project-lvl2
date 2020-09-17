@@ -13,21 +13,22 @@ from gendiff import (
     NEW_VALUE,
     OLD_VALUE,
     UNCHANGEABLE,
+    ROOT,
 )
 
 
 def test_flat_mkast():
     """Flat file testing."""
-    filename1 = './tests/fixtures/file1.json'
-    filename2 = './tests/fixtures/file2.json'
+    filename1 = './tests/fixtures/flat_file/file1.json'
+    filename2 = './tests/fixtures/flat_file/file2.json'
 
     actuall_json = mkast(
         get_data_from_file(filename1),
         get_data_from_file(filename2),
     )
 
-    filename1 = './tests/fixtures/file1.yml'
-    filename2 = './tests/fixtures/file2.yml'
+    filename1 = './tests/fixtures/flat_file/file1.yml'
+    filename2 = './tests/fixtures/flat_file/file2.yml'
 
     actuall_yml = mkast(
         get_data_from_file(filename1),
@@ -68,5 +69,11 @@ def test_flat_mkast():
         key=lambda name_of_key: name_of_key[NAME],
         reverse=False,
     )
-    assert expectation == actuall_json  # noqa: S101
-    assert expectation == actuall_yml  # noqa: S101
+    assert expectation == mknode(
+        name=ROOT,
+        children=actuall_json,
+    )
+    assert expectation == mknode(
+        name=ROOT,
+        children=actuall_yml,
+    )
