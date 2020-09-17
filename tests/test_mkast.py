@@ -19,16 +19,16 @@ from gendiff import (
 
 def test_flat_mkast():
     """Flat file testing."""
-    filename1 = './tests/fixtures/flat_file/file1.json'
-    filename2 = './tests/fixtures/flat_file/file2.json'
+    filename1 = './tests/fixtures/flat_files/file1.json'
+    filename2 = './tests/fixtures/flat_files/file2.json'
 
     actuall_json = mkast(
         get_data_from_file(filename1),
         get_data_from_file(filename2),
     )
 
-    filename1 = './tests/fixtures/flat_file/file1.yml'
-    filename2 = './tests/fixtures/flat_file/file2.yml'
+    filename1 = './tests/fixtures/flat_files/file1.yml'
+    filename2 = './tests/fixtures/flat_files/file2.yml'
 
     actuall_yml = mkast(
         get_data_from_file(filename1),
