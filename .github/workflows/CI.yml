@@ -28,13 +28,6 @@ jobs:
           make check
           make lint
           make test
-      - name: Upload  coverage to Codeclimate
-        uses: paambaati/codeclimate-action@v2.6.0
-        env:
-          CC_TEST_REPORTER_ID: 4567216710d386622d5910eed8485d56e5f22a894707fece56c0bbbdcbe513ed
-        with:
-          coverageCommand: after-build
-          Debug: True
             
             
           
