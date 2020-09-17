@@ -33,4 +33,4 @@ jobs:
         env:
           CC_TEST_REPORTER_ID: 4567216710d386622d5910eed8485d56e5f22a894707fece56c0bbbdcbe513ed
         with:
-          coverageCommand: cc-test-reporter after-build -d
+          coverageCommand: .coverage after-build -d
