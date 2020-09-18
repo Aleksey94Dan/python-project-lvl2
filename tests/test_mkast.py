@@ -22,7 +22,7 @@ def sorted_(node):
     if children:
         children.sort(
             key=lambda name_of_key: name_of_key[NAME],
-            reverse=True,
+            reverse=False,
         )
     else:
         return
