@@ -230,11 +230,13 @@ def test_nested_mkast():
     )
 
     sorted_(expectation)
-    sorted_(actual_json)
-    sorted_(actual_yml)
 
-    assert expectation == actual_json
-    assert expectation == actual_yml
+    assert expectation == mknode(
+        name=ROOT,
+        children=actual_json,
+    )
+    assert expectation == mknode(
+        name=ROOT,
+        children=actual_yml,
+    )
 
-    
-    
