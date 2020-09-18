@@ -61,7 +61,15 @@ def mkast(before_file, after_file, acc=None):  # noqa: WPS210
     for common_key in common_keys:
         before_value = before_file.get(common_key)
         after_value = after_file.get(common_key)
-        if after_value == before_value:
+        
+        if isinstance(after_value, dict) and isinstance(before_value, dict):
+            acc.append(
+                mknode(
+                    name=common_key,
+                    children=mkast(before_value, after_value),
+                ),
+            )
+        elif after_value == before_value:
             acc.append(
                 mknode(
                     name=common_key,
