@@ -18,6 +18,7 @@ from gendiff import (
 
 
 def sorted_(node):
+    """Sorted nested structure."""
     children = get_children(node)
     if children:
         children.sort(
@@ -35,17 +36,23 @@ def test_flat_mkast():
     filename1 = './tests/fixtures/flat_files/file1.json'
     filename2 = './tests/fixtures/flat_files/file2.json'
 
-    actuall_json = mkast(
-        get_data_from_file(filename1),
-        get_data_from_file(filename2),
+    actual_json = mknode(
+        name=ROOT,
+        children=mkast(
+            get_data_from_file(filename1),
+            get_data_from_file(filename2),
+        ),
     )
 
     filename1 = './tests/fixtures/flat_files/file1.yml'
     filename2 = './tests/fixtures/flat_files/file2.yml'
 
-    actuall_yml = mkast(
-        get_data_from_file(filename1),
-        get_data_from_file(filename2),
+    actual_yml = mknode(
+        name=ROOT,
+        children=mkast(
+            get_data_from_file(filename1),
+            get_data_from_file(filename2),
+        ),
     )
 
     expectation = mknode(
@@ -82,29 +89,21 @@ def test_flat_mkast():
         key=lambda name_of_key: name_of_key[NAME],
         reverse=False,
     )
-    assert expectation == mknode(
-        name=ROOT,
-        children=actuall_json,
-    )
-    assert expectation == mknode(
-        name=ROOT,
-        children=actuall_yml,
-    )
+    assert expectation == actual_json  # noqa: S101
+    assert expectation == actual_yml  # noqa: S101
 
-    
+
 def test_nested_mkast():
-    """Flat file testing."""
+    """Nested file testing."""
     filename1 = './tests/fixtures/nested_files/file1.json'
     filename2 = './tests/fixtures/nested_files/file2.json'
 
     actual_json = mknode(
         name=ROOT,
-        children=[
-            mkast(
-                get_data_from_file(filename1),
-                get_data_from_file(filename2),
-            )
-        ]
+        children=mkast(
+            get_data_from_file(filename1),
+            get_data_from_file(filename2),
+        ),
     )
 
     filename1 = './tests/fixtures/nested_files/file1.yml'
@@ -112,12 +111,10 @@ def test_nested_mkast():
 
     actual_yml = mknode(
         name=ROOT,
-        children=[
-            mkast(
-                get_data_from_file(filename1),
-                get_data_from_file(filename2),
-            )
-        ]
+        children=mkast(
+            get_data_from_file(filename1),
+            get_data_from_file(filename2),
+        ),
     )
 
     expectation = mknode(
@@ -139,7 +136,7 @@ def test_nested_mkast():
                     mknode(
                         name='setting2',
                         status=DELETED,
-                        value=200,
+                        value=200,  # noqa: WPS432
                     ),
                     mknode(
                         name='setting3',
@@ -160,14 +157,17 @@ def test_nested_mkast():
                         name='setting6',
                         children=[
                             mknode(
-                                name='dog',
+                                name='doge',
                                 children=[
                                     mknode(
                                         name='wow',
                                         status=CHANGEABLE,
-                                        value={OLD_VALUE: 'too much', NEW_VALUE: 'so much'}
-                                    )
-                                ]
+                                        value={
+                                            OLD_VALUE: 'too much',
+                                            NEW_VALUE: 'so much',
+                                        },
+                                    ),
+                                ],
                             ),
                             mknode(
                                 name='key',
@@ -178,10 +178,10 @@ def test_nested_mkast():
                                 name='ops',
                                 status=ADDED,
                                 value='vops',
-                            )
+                            ),
                         ],
                     ),
-                ]
+                ],
             ),
             mknode(
                 name='group1',
@@ -189,7 +189,7 @@ def test_nested_mkast():
                     mknode(
                         name='baz',
                         status=CHANGEABLE,
-                        value={OLD_VALUE: 'bas', NEW_VALUE: 'bars'}
+                        value={OLD_VALUE: 'bas', NEW_VALUE: 'bars'},
                     ),
                     mknode(
                         name='foo',
@@ -201,7 +201,7 @@ def test_nested_mkast():
                         status=CHANGEABLE,
                         value={OLD_VALUE: {'key': 'value'}, NEW_VALUE: 'str'},
                     ),
-                ]
+                ],
             ),
             mknode(
                 name='group2',
@@ -224,19 +224,10 @@ def test_nested_mkast():
                         },
                     },
                 },
-
             ),
-        ]
+        ],
     )
 
     sorted_(expectation)
-
-    assert expectation == mknode(
-        name=ROOT,
-        children=actual_json,
-    )
-    assert expectation == mknode(
-        name=ROOT,
-        children=actual_yml,
-    )
-
+    assert expectation == actual_json  # noqa: S101
+    assert expectation == actual_yml  # noqa: S101

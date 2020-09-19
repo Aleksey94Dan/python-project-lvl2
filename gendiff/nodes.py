@@ -47,7 +47,7 @@ def get_status(node):
     return node.get(STATUS)
 
 
-def mkast(before_file, after_file, acc=None):  # noqa: WPS210
+def mkast(before_file, after_file, acc=None):  # noqa: WPS210, WPS231
     """Rerurn an abstract syntax tree."""
     acc = acc if acc else []
 
@@ -61,7 +61,6 @@ def mkast(before_file, after_file, acc=None):  # noqa: WPS210
     for common_key in common_keys:
         before_value = before_file.get(common_key)
         after_value = after_file.get(common_key)
-        
         if isinstance(after_value, dict) and isinstance(before_value, dict):
             acc.append(
                 mknode(
