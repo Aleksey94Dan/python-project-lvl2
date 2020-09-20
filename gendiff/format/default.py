@@ -1,7 +1,7 @@
 # -*- coding:utf-8 -*-
 
 """The template for default formatting."""
-from gendiff.nodes import get_children, get_name, get_value, get_status
+from gendiff.nodes import get_children, get_name, get_value, get_status, mknode
 from gendiff import (
     UNCHANGEABLE,
     CHANGEABLE,
@@ -9,30 +9,160 @@ from gendiff import (
     DELETED,
     OLD_VALUE,
     NEW_VALUE,
+    ROOT,
 )
 
+expectation = mknode(
+        name=ROOT,
+        children=[
+            mknode(
+                name='common',
+                children=[
+                    mknode(
+                        name='follow',
+                        status=ADDED,
+                        value=False,
+                    ),
+                    mknode(
+                        name='setting1',
+                        status=UNCHANGEABLE,
+                        value='Value 1',
+                    ),
+                    mknode(
+                        name='setting2',
+                        status=DELETED,
+                        value=200,  # noqa: WPS432
+                    ),
+                    mknode(
+                        name='setting3',
+                        status=CHANGEABLE,
+                        value={OLD_VALUE: True, NEW_VALUE: {'key': 'value'}},
+                    ),
+                    mknode(
+                        name='setting4',
+                        status=ADDED,
+                        value='blah blah',
+                    ),
+                    mknode(
+                        name='setting5',
+                        status=ADDED,
+                        value={'key5': 'value5'},
+                    ),
+                    mknode(
+                        name='setting6',
+                        children=[
+                            mknode(
+                                name='doge',
+                                children=[
+                                    mknode(
+                                        name='wow',
+                                        status=CHANGEABLE,
+                                        value={
+                                            OLD_VALUE: 'too much',
+                                            NEW_VALUE: 'so much',
+                                        },
+                                    ),
+                                ],
+                            ),
+                            mknode(
+                                name='key',
+                                status=UNCHANGEABLE,
+                                value='value',
+                            ),
+                            mknode(
+                                name='ops',
+                                status=ADDED,
+                                value='vops',
+                            ),
+                        ],
+                    ),
+                ],
+            ),
+            mknode(
+                name='group1',
+                children=[
+                    mknode(
+                        name='baz',
+                        status=CHANGEABLE,
+                        value={OLD_VALUE: 'bas', NEW_VALUE: 'bars'},
+                    ),
+                    mknode(
+                        name='foo',
+                        status=UNCHANGEABLE,
+                        value='bar',
+                    ),
+                    mknode(
+                        name='nest',
+                        status=CHANGEABLE,
+                        value={OLD_VALUE: {'key': 'value'}, NEW_VALUE: 'str'},
+                    ),
+                ],
+            ),
+            mknode(
+                name='group2',
+                status=DELETED,
+                value={
+                    'abc': 12345,
+                    'deep': {
+                        'id': 45,
+                    },
+                },
+            ),
+            mknode(
+                name='group3',
+                status=ADDED,
+                value={
+                    'fee': 100500,
+                    'deep': {
+                        'id': {
+                            'number': 45,
+                        },
+                    },
+                },
+            ),
+        ],
+    )
 
-def pretty_print(tree):  # noqa: D103, WPS210, WPS231
+
+
+def pretty_print(tree, name=None, status=None):  # noqa: D103, WPS210, WPS231
     children = get_children(tree)
-    string = '{\n'
+    value = get_value(tree)
+
+    if status is CHANGEABLE:
+        return {
+            '+ ' + name: value.get(NEW_VALUE),
+            '- ' + name: value.get(OLD_VALUE),
+        }
+
+    if not children:
+        return value
+
+
+    acc = {}
     for child in children:
         name = get_name(child)
-        value = get_value(child)  # noqa: WPS110
         status = get_status(child)
-
-        if isinstance(value, bool):
-            value = str(value).lower()  # noqa: WPS110
-
         if status is ADDED:
-            string = string + '  + {0}:{1}\n'.format(name, value)
+            name = '+ ' + name
+            acc.update({name: pretty_print(child)})
         elif status is DELETED:
-            string = string + '  - {0}:{1}\n'.format(name, value)
+            name = '- ' + name
+            acc.update({name: pretty_print(child)})
         elif status is UNCHANGEABLE:
-            string = string + '    {0}:{1}\n'.format(name, value)
+            name = '  ' + name
+            acc.update({name: pretty_print(child)})
+        elif status is None:
+            name = '  ' + name
+            acc.update({name: pretty_print(child)})
         elif status is CHANGEABLE:
-            old_value = value.get(OLD_VALUE)
-            new_value = value.get(NEW_VALUE)
-            string = string + '  - {0}:{1}\n'.format(name, old_value)
-            string = string + '  + {0}:{1}\n'.format(name, new_value)
-    string = string + '}'  # noqa: WPS336
-    return string
+            acc.update(pretty_print(child, name=name, status=status))
+    return acc
+
+
+
+if __name__== '__main__':
+    from pprint import pprint
+    # pprint(expectation)
+    pprint(pretty_print(expectation))
+
