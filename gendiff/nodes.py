@@ -47,9 +47,9 @@ def get_status(node):
     return node.get(STATUS)
 
 
-def mkast(before_file, after_file, acc=None):  # noqa: WPS210, WPS231
+def mkast(before_file, after_file):  # noqa: WPS210, WPS231
     """Return an abstract syntax tree."""
-    acc = acc if acc else []
+    acc = []
 
     keys_before_change = set(before_file.keys())
     keys_after_change = set(after_file.keys())
