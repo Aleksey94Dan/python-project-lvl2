@@ -125,38 +125,36 @@ expectation = mknode(
 
 
 
-def pretty_print(tree, name=None, status=None):  # noqa: D103, WPS210, WPS231
+def get_mapping(tree, name=None, status=None, depth=0):  # noqa: D103, WPS210, WPS231
     children = get_children(tree)
     value = get_value(tree)
 
     if status is CHANGEABLE:
         return {
-            '+ ' + name: value.get(NEW_VALUE),
-            '- ' + name: value.get(OLD_VALUE),
+            ' + {}'.format(name): value.get(NEW_VALUE),
+            ' - {}'.format(name): value.get(OLD_VALUE),
         }
 
     if not children:
         return value
-
-
     acc = {}
     for child in children:
         name = get_name(child)
         status = get_status(child)
         if status is ADDED:
-            name = '+ ' + name
-            acc.update({name: pretty_print(child)})
+            name = '  {} {}'.format('+', name)
+            acc.update({name: get_mapping(child)})
         elif status is DELETED:
-            name = '- ' + name
-            acc.update({name: pretty_print(child)})
+            name = '  {} {}'.format('-', name)
+            acc.update({name: get_mapping(child)})
         elif status is UNCHANGEABLE:
-            name = '  ' + name
-            acc.update({name: pretty_print(child)})
+            name = '    {}'.format(name)
+            acc.update({name: get_mapping(child)})
         elif status is None:
-            name = '  ' + name
-            acc.update({name: pretty_print(child)})
+            name = '    {}'.format(name)
+            acc.update({name: get_mapping(child)})
         elif status is CHANGEABLE:
-            acc.update(pretty_print(child, name=name, status=status))
+            acc.update(get_mapping(child, name=name, status=status))
     return acc
 
 
