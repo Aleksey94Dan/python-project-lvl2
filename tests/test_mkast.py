@@ -2,7 +2,7 @@
 
 """Test for building AST."""
 
-from gendiff.nodes import mknode, mkast, get_children, mknode
+from gendiff.nodes import mknode, mkast, get_children
 from gendiff.parsers import get_data_from_file
 from gendiff import (
     ADDED,

@@ -52,11 +52,11 @@ def mkast(before_file, after_file, acc=None):  # noqa: WPS210, WPS231
     acc = acc if acc else []
 
     keys_before_change = set(before_file.keys())
-    keys_after_cnange = set(after_file.keys())
+    keys_after_change = set(after_file.keys())
 
-    common_keys = keys_before_change.intersection(keys_after_cnange)
-    added_keys = keys_after_cnange.difference(keys_before_change)
-    deleted_keys = keys_before_change.difference(keys_after_cnange)
+    common_keys = keys_before_change.intersection(keys_after_change)
+    added_keys = keys_after_change.difference(keys_before_change)
+    deleted_keys = keys_before_change.difference(keys_after_change)
 
     for common_key in common_keys:
         before_value = before_file.get(common_key)

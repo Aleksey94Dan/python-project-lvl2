@@ -7,7 +7,7 @@ import os
 
 import yaml
 
-from gendiff.format.default import pretty_print
+from gendiff.format.mapping import get_mapping
 
 EXTENSIONS = {
     '.json': json.load,
@@ -40,7 +40,7 @@ def parse():
         '-f',
         '--format',
         # default=,  # noqa: T002
-        type=pretty_print,
+        type=get_mapping,
         help='set format of output',
     )
     parser.parse_args()
