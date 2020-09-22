@@ -37,13 +37,16 @@ def get_mapping(tree, name=None, status=None):  # noqa: WPS210, WPS231
         status = get_status(child)
         if status is ADDED:  # noqa: WPS223
             name = '  {0} {1}'.format('+', name)
+            acc.update({name: get_mapping(child)})
         elif status is DELETED:
             name = '  {0} {1}'.format('-', name)
+            acc.update({name: get_mapping(child)})
         elif status is UNCHANGEABLE:
             name = '    {0}'.format(name)
+            acc.update({name: get_mapping(child)})
         elif status is None:
             name = '    {0}'.format(name)
+            acc.update({name: get_mapping(child)})
         elif status is CHANGEABLE:
             acc.update(get_mapping(child, name=name, status=status))
-        acc.update({name: get_mapping(child)})
     return acc
