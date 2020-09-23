@@ -28,6 +28,7 @@ pytest-cov = "=2.4.0"
 coverage = "=4.3.4"
 PyYAML = "^5.3"
 pylint = "^2.4"
+rope = "^0.17.0"
 
 [[tool.poetry.source]]
 name = "test"

@@ -1,6 +1,6 @@
 # -*- coding:utf-8 -*-
 
-"""The template for default formatting."""
+"""The templates formatting."""
 from gendiff.nodes import (
     get_children,
     get_name,
