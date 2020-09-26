@@ -2,73 +2,23 @@
 
 """Test for format."""
 from gendiff.nodes import mknode, mkast
-from gendiff.format.mapping import get_mapping
+from gendiff.format.mapping import mapping_default, mapping_plain
 from gendiff.parsers import get_data_from_file
 from gendiff import ROOT
+from tests.fixtures.expected import (
+    EXPECTATION_FOR_FLAT_MAPPING_DEFAULT,
+    EXPECTATION_FOR_NESTED_MAPPING_DEFAULT,
+    EXPECTATION_FOR_FLAT_MAPPING_PLAIN,
+    EXPECTATION_FOR_NESTED_MAPPING_PLAIN,
+)
 
 
-def test_mapping_format_defatult():  # noqa: WPS210
+def test_mapping_format_defatult():
     """Test mapping for flat and nested files."""
-    expectation_for_flat = {
-        '  - follow': False,
-        '    host': 'hexlet.io',
-        '  - proxy': '123.234.53.22',
-        '  - timeout': 50,
-        '  + timeout': 20,
-        '  + verbose': True,
-    }
-
-    expectation_for_nested = {
-        '    common': {
-            '  + follow': False,
-            '    setting1': 'Value 1',
-            '  - setting2': 200,
-            '  - setting3': True,
-            '  + setting3': {
-                'key': 'value',
-            },
-            '  + setting4': 'blah blah',
-            '  + setting5': {
-                'key5': 'value5',
-            },
-            '    setting6': {
-                '    doge': {
-                    '  + wow': 'so much',
-                    '  - wow': 'too much',
-                },
-                '    key': 'value',
-                '  + ops': 'vops',
-            },
-        },
-        '    group1': {
-            '    foo': 'bar',
-            '  - baz': 'bas',
-            '  + baz': 'bars',
-            '  - nest': {
-                'key': 'value',
-            },
-            '  + nest': 'str',
-        },
-        '  - group2': {
-            'abc': 12345,
-            'deep': {
-                'id': 45,
-            },
-        },
-        '  + group3': {
-            'deep': {
-                'id': {
-                    'number': 45,
-                },
-            },
-            'fee': 100500,
-        },
-    }
-
     filename1 = './tests/fixtures/flat_files/file1.json'
     filename2 = './tests/fixtures/flat_files/file2.json'
 
-    actual_flat = get_mapping(
+    actual_flat = mapping_default(
         mknode(
             name=ROOT,
             children=mkast(
@@ -81,7 +31,25 @@ def test_mapping_format_defatult():  # noqa: WPS210
     filename1 = './tests/fixtures/nested_files/file1.json'
     filename2 = './tests/fixtures/nested_files/file2.json'
 
-    actual_nested = get_mapping(
+    actual_nested = mapping_default(
+        mknode(
+            name=ROOT,
+            children=mkast(
+                get_data_from_file(filename1),
+                get_data_from_file(filename2),
+            ),
+        ),
+    )
+    assert EXPECTATION_FOR_FLAT_MAPPING_DEFAULT == actual_flat
+    assert EXPECTATION_FOR_NESTED_MAPPING_DEFAULT == actual_nested
+
+
+def test_mapping_format_plain():  # noqa: WPS210
+    """Test mapping for flat and nested files."""
+    filename1 = './tests/fixtures/flat_files/file1.json'
+    filename2 = './tests/fixtures/flat_files/file2.json'
+
+    actual_flats = mapping_plain(
         mknode(
             name=ROOT,
             children=mkast(
@@ -91,5 +59,21 @@ def test_mapping_format_defatult():  # noqa: WPS210
         ),
     )
 
-    assert expectation_for_flat == actual_flat  # noqa: S101
-    assert expectation_for_nested == actual_nested  # noqa: S101
+    for actual_flat in actual_flats:
+        assert actual_flat in EXPECTATION_FOR_FLAT_MAPPING_PLAIN
+
+    filename1 = './tests/fixtures/nested_files/file1.json'
+    filename2 = './tests/fixtures/nested_files/file2.json'
+
+    actual_nesteds = mapping_plain(
+        mknode(
+            name=ROOT,
+            children=mkast(
+                get_data_from_file(filename1),
+                get_data_from_file(filename2),
+            ),
+        ),
+    )
+
+    for actual_nested in actual_nesteds:
+        assert actual_nested in EXPECTATION_FOR_NESTED_MAPPING_PLAIN
