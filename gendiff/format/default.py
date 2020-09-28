@@ -5,7 +5,7 @@
 SIGN = '  '
 
 
-def formater(source):
+def format_(source):
     """Print default."""
     def inner(node, indent=0, string=None):  # noqa: WPS430
         string = string if string else ''
@@ -23,4 +23,4 @@ def formater(source):
                     SIGN * indent, str(vertex), str(child),
                 )
         return string
-    return '{{\n{0}}}'.format(inner(source))
+    return '{{\n{0}}}\n'.format(inner(source))

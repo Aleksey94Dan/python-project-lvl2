@@ -1,20 +1,15 @@
 # -*- coding:utf-8 -*-
 
 """The templates formatting."""
-from gendiff.nodes import (
-    get_children,
-    get_name,
-    get_value,
-    get_status,
-)
 from gendiff import (
-    UNCHANGEABLE,
-    CHANGEABLE,
     ADDED,
+    CHANGEABLE,
     DELETED,
-    OLD_VALUE,
     NEW_VALUE,
+    OLD_VALUE,
+    UNCHANGEABLE,
 )
+from gendiff.nodes import get_children, get_name, get_status, get_value
 
 
 def mapping_default(tree, name=None, status=None):  # noqa: WPS210, WPS231

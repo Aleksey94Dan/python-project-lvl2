@@ -4,16 +4,32 @@
 import argparse
 import json
 import os
+import sys
 
 import yaml
 
-from gendiff.format.mapping import mapping_default
+from gendiff import format
+from gendiff.diif import generate_diff
 
 EXTENSIONS = {
     '.json': json.load,
     '.yaml': yaml.safe_load,
     '.yml': yaml.safe_load,
 }.get
+
+
+def formatter(name):
+    """Return the formatting function according to the specified format."""
+    if name == format.PLAIN:
+        return format.plain
+    elif name == format.DEFAULT:
+        return format.default
+    raise argparse.ArgumentTypeError(
+        'Unknown formatter: "{0}". Use one of this: {1}'.format(
+            name,
+            ', '.join(format.FORMATTERS),
+        ),
+    )
 
 
 def get_data_from_file(path):
@@ -39,8 +55,15 @@ def parse():
     parser.add_argument(
         '-f',
         '--format',
-        # default=,  # noqa: T002
-        type=mapping_default,
+        default=format.DEFAULT,
+        type=formatter,
         help='set format of output',
     )
-    parser.parse_args()
+    args = parser.parse_args()
+    sys.stdout.write(
+        generate_diff(
+            args.first_file,
+            args.second_file,
+            args.format,
+        ),
+    )
