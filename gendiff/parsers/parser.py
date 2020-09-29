@@ -5,7 +5,6 @@ import argparse
 import json
 import os
 import sys
-
 import yaml
 
 from gendiff import format
@@ -24,7 +23,7 @@ def formatter(name):
         return format.plain
     elif name == format.DEFAULT:
         return format.default
-    elif name = format.JSON:
+    elif name == format.JSON:
         return format.json
     raise argparse.ArgumentTypeError(
         'Unknown formatter: "{0}". Use one of this: {1}'.format(
@@ -46,8 +45,10 @@ def get_data_from_file(path):
         return EXTENSIONS(extension)(file_name)
 
 
-def parse():
+def parse(args=None):
     """Parser command line arguments."""
+    if not args:
+        args = sys.argv[1:]
     parser = argparse.ArgumentParser(
         prog='gendiff',
         description='Generate diff',
@@ -61,11 +62,9 @@ def parse():
         type=formatter,
         help='set format of output',
     )
-    args = parser.parse_args()
-    sys.stdout.write(
-        generate_diff(
-            args.first_file,
-            args.second_file,
-            args.format,
-        ),
+    args = parser.parse_args(args)
+    return generate_diff(
+        args.first_file,
+        args.second_file,
+        args.format,
     )

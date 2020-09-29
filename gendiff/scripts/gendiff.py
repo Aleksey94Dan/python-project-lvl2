@@ -5,12 +5,14 @@
 """The main parsing script."""
 
 
+import sys
+
 from gendiff.parsers import parse
 
 
 def main():
     """Run a code."""
-    parse()
+    sys.stdout.write(parse())
 
 
 if __name__ == '__main__':

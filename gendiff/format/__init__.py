@@ -1,10 +1,10 @@
 # -*- coding:utf-8 -*-
 
 """Init package."""
-from gendiff.format import default
-from gendiff.format import plain
-from gendiff.format.mapping import mapping_default, mapping_plain
 import json
+
+from gendiff.format import default, plain
+from gendiff.format.mapping import mapping_default, mapping_plain
 
 
 def _compose(g, f):  # noqa: WPS111

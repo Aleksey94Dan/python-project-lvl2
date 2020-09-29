@@ -13,7 +13,7 @@ def _inner(node, indent=0, string=None):
         if ' ' not in str(vertex):
             vertex = SIGN + str(vertex)
         if isinstance(child, dict):
-            string = string + '{0}{1} {{\n'.format(indent * SIGN, vertex)
+            string = string + '{0}{1}: {{\n'.format(indent * SIGN, vertex)
             string = string + _inner(child, indent + 2)
             string = string + '{0}}}\n'.format((indent + 2) * SIGN)
         else:
