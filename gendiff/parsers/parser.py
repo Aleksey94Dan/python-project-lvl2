@@ -24,6 +24,8 @@ def formatter(name):
         return format.plain
     elif name == format.DEFAULT:
         return format.default
+    elif name = format.JSON:
+        return format.json
     raise argparse.ArgumentTypeError(
         'Unknown formatter: "{0}". Use one of this: {1}'.format(
             name,
