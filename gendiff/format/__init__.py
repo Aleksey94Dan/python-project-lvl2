@@ -4,7 +4,7 @@
 from gendiff.format import default
 from gendiff.format import plain
 from gendiff.format.mapping import mapping_default, mapping_plain
-from json
+import json
 
 
 def _compose(g, f):  # noqa: WPS111
