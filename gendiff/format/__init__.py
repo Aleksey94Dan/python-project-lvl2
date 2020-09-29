@@ -4,6 +4,7 @@
 from gendiff.format import default
 from gendiff.format import plain
 from gendiff.format.mapping import mapping_default, mapping_plain
+from json
 
 
 def _compose(g, f):  # noqa: WPS111
@@ -14,7 +15,7 @@ def _compose(g, f):  # noqa: WPS111
 
 default = _compose(default.format_, mapping_default)
 plain = _compose(plain.format_, mapping_plain)
-
+json = _compose(json.dumps, mapping_default)
 
 FORMATTERS = (JSON, PLAIN, DEFAULT) = (  # noqa: WPS429
     'json', 'plain', 'default',
