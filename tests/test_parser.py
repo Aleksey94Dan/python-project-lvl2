@@ -3,63 +3,60 @@
 """Test for parse CLI."""
 
 import argparse
+import json
 
 from gendiff.parsers import parse
 from tests.fixtures.expected import (
-    EXPECTATION_FLAT_DEFAULT,
-    EXPECTATION_JSON,
+    EXPECTATION_FOR_NESTED_MAPPING_DEFAULT,
     EXPECTATION_NESTED_DEFAULT,
     EXPECTATION_PLAIN,
 )
 
+filename_flat1 = 'tests/fixtures/flat_files/file1.yml'
+filename_flat2 = 'tests/fixtures/flat_files/file2.json'
+filename_nested1 = 'tests/fixtures/nested_files/file1.json'
+filename_nested2 = 'tests/fixtures/nested_files/file2.yml'
+fake_flat = 'tests/fixtures/flat_files/file1.ymls'
+fake_format = 'ini'
+
 
 def test_parse():
     """Test CLI arguments."""
-    actual_flat_default = parse(
-        [
-            '-f',
-            'default',
-            'tests/fixtures/flat_files/file1.yml',
-            'tests/fixtures/flat_files/file2.json',
-        ],
-    )
     actual_nested_default = parse(
         [
             '-f',
             'default',
-            'tests/fixtures/nested_files/file1.json',
-            'tests/fixtures/nested_files/file2.json',
+            filename_nested1,
+            filename_nested2,
         ],
     )
     actual_nested_plain = parse(
         [
             '-f',
             'plain',
-            'tests/fixtures/nested_files/file1.yml',
-            'tests/fixtures/nested_files/file2.json',
+            filename_nested1,
+            filename_nested2,
         ],
     )
 
-    actual_nested_json = parse(
-        [
-            '-f',
-            'json',
-            'tests/fixtures/nested_files/file1.json',
-            'tests/fixtures/nested_files/file2.json',
-        ],
+    actual_nested_json = json.loads(
+        parse(
+            [
+                '-f',
+                'json',
+                filename_nested1,
+                filename_nested2,
+            ],
+        ),
     )
 
-    for actual in actual_flat_default.split('\n'):
-        assert actual in EXPECTATION_FLAT_DEFAULT
+    for actual_nested in actual_nested_default.split('\n'):
+        assert actual_nested in EXPECTATION_NESTED_DEFAULT
 
-    for actual in actual_nested_default.split('\n'):
-        assert actual in EXPECTATION_NESTED_DEFAULT
+    for actual_plain in actual_nested_plain.split('\n'):
+        assert actual_plain in EXPECTATION_PLAIN
 
-    for actual in actual_nested_plain.split('\n'):
-        assert actual in EXPECTATION_PLAIN
-
-    for actual in actual_nested_json.split(','):
-        assert actual in EXPECTATION_JSON
+    assert actual_nested_json == EXPECTATION_FOR_NESTED_MAPPING_DEFAULT
 
 
 def test_argument_type_error_extension():
@@ -69,8 +66,8 @@ def test_argument_type_error_extension():
             [
                 '-f',
                 'json',
-                'tests/fixtures/flat_files/file1.ymls',
-                'tests/fixtures/flat_files/file2.json',
+                fake_flat,
+                filename_flat1,
             ],
         )
     except SystemExit as exinfo:
@@ -88,9 +85,9 @@ def test_argument_type_error_formatter():
         parse(
             [
                 '-f',
-                'ini',
-                'tests/fixtures/flat_files/file1.json',
-                'tests/fixtures/flat_files/file2.json',
+                fake_format,
+                filename_flat1,
+                filename_flat2,
             ],
         )
     except SystemExit as exinfo:
