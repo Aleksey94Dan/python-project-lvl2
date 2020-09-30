@@ -2,13 +2,7 @@
 
 """Format plain."""
 
-from gendiff import (
-    CHANGEABLE,
-    ADDED,
-    DELETED,
-    OLD_VALUE,
-    NEW_VALUE,
-)
+from gendiff import ADDED, CHANGEABLE, DELETED, NEW_VALUE, OLD_VALUE
 
 FOR_ADDED = "Property '{0}' was added with value: {1}\n"
 FOR_DELETED = "Property '{0}' was removed\n"

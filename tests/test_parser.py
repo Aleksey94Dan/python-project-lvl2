@@ -5,7 +5,7 @@
 import argparse
 import json
 
-from gendiff.parsers import parse
+from gendiff import parsers
 from tests.fixtures.expected import (
     EXPECTATION_FOR_NESTED_MAPPING_DEFAULT,
     EXPECTATION_NESTED_DEFAULT,
@@ -22,7 +22,7 @@ fake_format = 'ini'
 
 def test_parse():
     """Test CLI arguments."""
-    actual_nested_default = parse(
+    actual_nested_default = parsers.parse(
         [
             '-f',
             'default',
@@ -30,7 +30,7 @@ def test_parse():
             filename_nested2,
         ],
     )
-    actual_nested_plain = parse(
+    actual_nested_plain = parsers.parse(
         [
             '-f',
             'plain',
@@ -40,7 +40,7 @@ def test_parse():
     )
 
     actual_nested_json = json.loads(
-        parse(
+        parsers.parse(
             [
                 '-f',
                 'json',
@@ -62,7 +62,7 @@ def test_parse():
 def test_argument_type_error_extension():
     """Test for invalid extension."""
     try:
-        parse(
+        parsers.parse(
             [
                 '-f',
                 'json',
@@ -82,7 +82,7 @@ def test_argument_type_error_extension():
 def test_argument_type_error_formatter():
     """Test for invalid format."""
     try:
-        parse(
+        parsers.parse(
             [
                 '-f',
                 fake_format,

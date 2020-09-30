@@ -7,12 +7,12 @@
 
 import sys
 
-from gendiff.parsers import parse
+from gendiff import parsers
 
 
 def main():
     """Run a code."""
-    sys.stdout.write(parse())
+    sys.stdout.write(parsers.parse())
 
 
 if __name__ == '__main__':

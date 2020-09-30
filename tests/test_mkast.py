@@ -2,9 +2,9 @@
 
 """Test for building AST."""
 
-from gendiff.nodes import mknode, mkast
-from gendiff.parsers import get_data_from_file
 from gendiff import ROOT
+from gendiff.nodes import mkast, mknode
+from gendiff.parsers import get_data_from_file
 from tests.fixtures.expected import (
     EXPECTATION_FLAT_AST,
     EXPECTATION_NESTED_AST,

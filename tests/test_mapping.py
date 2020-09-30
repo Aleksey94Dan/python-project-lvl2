@@ -1,14 +1,14 @@
 # -*- coding:utf-8 -*-
 
 """Test for format."""
-from gendiff.nodes import mknode, mkast
-from gendiff.format.mapping import mapping_default, mapping_plain
-from gendiff.parsers import get_data_from_file
 from gendiff import ROOT
+from gendiff.format.mapping import mapping_default, mapping_plain
+from gendiff.nodes import mkast, mknode
+from gendiff.parsers import get_data_from_file
 from tests.fixtures.expected import (
     EXPECTATION_FOR_FLAT_MAPPING_DEFAULT,
-    EXPECTATION_FOR_NESTED_MAPPING_DEFAULT,
     EXPECTATION_FOR_FLAT_MAPPING_PLAIN,
+    EXPECTATION_FOR_NESTED_MAPPING_DEFAULT,
     EXPECTATION_FOR_NESTED_MAPPING_PLAIN,
 )
 
