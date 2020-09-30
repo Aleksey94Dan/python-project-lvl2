@@ -2,6 +2,8 @@
 
 """Test for parse CLI."""
 
+import argparse
+
 from gendiff.parsers import parse
 from tests.fixtures.expected import (
     EXPECTATION_FLAT_DEFAULT,
@@ -58,3 +60,43 @@ def test_parse():
 
     for actual in actual_nested_json.split(','):
         assert actual in EXPECTATION_JSON
+
+
+def test_argument_type_error_extension():
+    """Test for invalid extension."""
+    try:
+        parse(
+            [
+                '-f',
+                'json',
+                'tests/fixtures/flat_files/file1.ymls',
+                'tests/fixtures/flat_files/file2.json',
+            ],
+        )
+    except SystemExit as exinfo:
+        assert isinstance(
+            exinfo.__context__,  # noqa: WPS609
+            argparse.ArgumentError,
+        )
+    else:
+        raise ValueError('Exception not raised')
+
+
+def test_argument_type_error_formatter():
+    """Test for invalid format."""
+    try:
+        parse(
+            [
+                '-f',
+                'ini',
+                'tests/fixtures/flat_files/file1.json',
+                'tests/fixtures/flat_files/file2.json',
+            ],
+        )
+    except SystemExit as exinfo:
+        assert isinstance(
+            exinfo.__context__,  # noqa: WPS609
+            argparse.ArgumentError,
+        )
+    else:
+        raise ValueError('Exception not raised')
