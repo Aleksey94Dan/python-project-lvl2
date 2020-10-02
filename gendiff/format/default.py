@@ -2,14 +2,15 @@
 
 """Format default."""
 
+from gendiff.format import _fix_type
+
 SIGN = '  '
 
 
 def _inner(node, indent=0, string=None):
     string = string if string else ''
     for vertex, child in node.items():
-        if isinstance(child, bool):
-            child = str(child).lower()
+        child = _fix_type(child)
         if ' ' not in str(vertex):
             vertex = SIGN + str(vertex)
         if isinstance(child, dict):
