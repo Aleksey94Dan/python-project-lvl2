@@ -17,6 +17,15 @@ from gendiff import (
 )
 from gendiff.nodes import get_children, mknode
 
+filename_flat1 = 'tests/fixtures/flat_files/file1.yml'
+filename_flat2 = 'tests/fixtures/flat_files/file2.json'
+filename_nested1 = 'tests/fixtures/nested_files/file1.json'
+filename_nested2 = 'tests/fixtures/nested_files/file2.yml'
+fake_flat = 'tests/fixtures/flat_files/file1.ymls'
+fake_format = 'ini'
+cmd_format = '-f'
+extension = ('default', 'json', 'plain')
+
 EXPECTATION_FOR_FLAT_MAPPING_DEFAULT = {  # noqa: WPS407
     '  - follow': False,
     '    host': 'hexlet.io',

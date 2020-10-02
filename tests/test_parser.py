@@ -10,16 +10,15 @@ from tests.fixtures.expected import (
     EXPECTATION_FOR_NESTED_MAPPING_DEFAULT,
     EXPECTATION_NESTED_DEFAULT,
     EXPECTATION_PLAIN,
+    cmd_format,
+    extension,
+    fake_flat,
+    fake_format,
+    filename_flat1,
+    filename_flat2,
+    filename_nested1,
+    filename_nested2,
 )
-
-filename_flat1 = 'tests/fixtures/flat_files/file1.yml'
-filename_flat2 = 'tests/fixtures/flat_files/file2.json'
-filename_nested1 = 'tests/fixtures/nested_files/file1.json'
-filename_nested2 = 'tests/fixtures/nested_files/file2.yml'
-fake_flat = 'tests/fixtures/flat_files/file1.ymls'
-fake_format = 'ini'
-cmd_format = '-f'
-extension = ('default', 'json', 'plain')
 
 
 def test_parse():

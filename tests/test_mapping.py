@@ -10,51 +10,47 @@ from tests.fixtures.expected import (
     EXPECTATION_FOR_FLAT_MAPPING_PLAIN,
     EXPECTATION_FOR_NESTED_MAPPING_DEFAULT,
     EXPECTATION_FOR_NESTED_MAPPING_PLAIN,
+    filename_flat1,
+    filename_flat2,
+    filename_nested1,
+    filename_nested2,
 )
 
 
 def test_mapping_format_defatult():
     """Test mapping for flat and nested files."""
-    filename1 = './tests/fixtures/flat_files/file1.json'
-    filename2 = './tests/fixtures/flat_files/file2.json'
-
     actual_flat = mapping_default(
         mknode(
             name=ROOT,
             children=mkast(
-                get_data_from_file(filename1),
-                get_data_from_file(filename2),
+                get_data_from_file(filename_flat1),
+                get_data_from_file(filename_flat2),
             ),
         ),
     )
-
-    filename1 = './tests/fixtures/nested_files/file1.json'
-    filename2 = './tests/fixtures/nested_files/file2.json'
 
     actual_nested = mapping_default(
         mknode(
             name=ROOT,
             children=mkast(
-                get_data_from_file(filename1),
-                get_data_from_file(filename2),
+                get_data_from_file(filename_nested1),
+                get_data_from_file(filename_nested2),
             ),
         ),
     )
+
     assert EXPECTATION_FOR_FLAT_MAPPING_DEFAULT == actual_flat
     assert EXPECTATION_FOR_NESTED_MAPPING_DEFAULT == actual_nested
 
 
-def test_mapping_format_plain():  # noqa: WPS210
+def test_mapping_format_plain():
     """Test mapping for flat and nested files."""
-    filename1 = './tests/fixtures/flat_files/file1.json'
-    filename2 = './tests/fixtures/flat_files/file2.json'
-
     actual_flats = mapping_plain(
         mknode(
             name=ROOT,
             children=mkast(
-                get_data_from_file(filename1),
-                get_data_from_file(filename2),
+                get_data_from_file(filename_flat1),
+                get_data_from_file(filename_flat2),
             ),
         ),
     )
@@ -62,15 +58,12 @@ def test_mapping_format_plain():  # noqa: WPS210
     for actual_flat in actual_flats:
         assert actual_flat in EXPECTATION_FOR_FLAT_MAPPING_PLAIN
 
-    filename1 = './tests/fixtures/nested_files/file1.json'
-    filename2 = './tests/fixtures/nested_files/file2.json'
-
     actual_nesteds = mapping_plain(
         mknode(
             name=ROOT,
             children=mkast(
-                get_data_from_file(filename1),
-                get_data_from_file(filename2),
+                get_data_from_file(filename_nested1),
+                get_data_from_file(filename_nested2),
             ),
         ),
     )

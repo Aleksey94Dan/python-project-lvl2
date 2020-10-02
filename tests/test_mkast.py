@@ -8,60 +8,34 @@ from gendiff.parsers import get_data_from_file
 from tests.fixtures.expected import (
     EXPECTATION_FLAT_AST,
     EXPECTATION_NESTED_AST,
+    filename_flat1,
+    filename_flat2,
+    filename_nested1,
+    filename_nested2,
 )
 
 
 def test_flat_mkast():
     """Flat file testing."""
-    filename1 = './tests/fixtures/flat_files/file1.json'
-    filename2 = './tests/fixtures/flat_files/file2.json'
-
-    actual_json = mknode(
+    actual = mknode(
         name=ROOT,
         children=mkast(
-            get_data_from_file(filename1),
-            get_data_from_file(filename2),
+            get_data_from_file(filename_flat1),
+            get_data_from_file(filename_flat2),
         ),
     )
 
-    filename1 = './tests/fixtures/flat_files/file1.yml'
-    filename2 = './tests/fixtures/flat_files/file2.yml'
-
-    actual_yml = mknode(
-        name=ROOT,
-        children=mkast(
-            get_data_from_file(filename1),
-            get_data_from_file(filename2),
-        ),
-    )
-
-    assert EXPECTATION_FLAT_AST == actual_json
-    assert EXPECTATION_FLAT_AST == actual_yml
+    assert EXPECTATION_FLAT_AST == actual
 
 
 def test_nested_mkast():
     """Nested file testing."""
-    filename1 = './tests/fixtures/nested_files/file1.json'
-    filename2 = './tests/fixtures/nested_files/file2.json'
-
-    actual_json = mknode(
+    actual = mknode(
         name=ROOT,
         children=mkast(
-            get_data_from_file(filename1),
-            get_data_from_file(filename2),
+            get_data_from_file(filename_nested1),
+            get_data_from_file(filename_nested2),
         ),
     )
 
-    filename1 = './tests/fixtures/nested_files/file1.yml'
-    filename2 = './tests/fixtures/nested_files/file2.yml'
-
-    actual_yml = mknode(
-        name=ROOT,
-        children=mkast(
-            get_data_from_file(filename1),
-            get_data_from_file(filename2),
-        ),
-    )
-
-    assert EXPECTATION_NESTED_AST == actual_json
-    assert EXPECTATION_NESTED_AST == actual_yml
+    assert EXPECTATION_NESTED_AST == actual
