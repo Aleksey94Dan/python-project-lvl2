@@ -18,22 +18,24 @@ filename_nested1 = 'tests/fixtures/nested_files/file1.json'
 filename_nested2 = 'tests/fixtures/nested_files/file2.yml'
 fake_flat = 'tests/fixtures/flat_files/file1.ymls'
 fake_format = 'ini'
+cmd_format = '-f'
+extension = ('default', 'json', 'plain')
 
 
 def test_parse():
     """Test CLI arguments."""
     actual_nested_default = parsers.parse(
         [
-            '-f',
-            'default',
+            cmd_format,
+            extension[0],
             filename_nested1,
             filename_nested2,
         ],
     )
     actual_nested_plain = parsers.parse(
         [
-            '-f',
-            'plain',
+            cmd_format,
+            extension[2],
             filename_nested1,
             filename_nested2,
         ],
@@ -42,8 +44,8 @@ def test_parse():
     actual_nested_json = json.loads(
         parsers.parse(
             [
-                '-f',
-                'json',
+                cmd_format,
+                extension[1],
                 filename_nested1,
                 filename_nested2,
             ],
@@ -64,8 +66,8 @@ def test_argument_type_error_extension():
     try:
         parsers.parse(
             [
-                '-f',
-                'json',
+                cmd_format,
+                extension[1],
                 fake_flat,
                 filename_flat1,
             ],
@@ -84,7 +86,7 @@ def test_argument_type_error_formatter():
     try:
         parsers.parse(
             [
-                '-f',
+                cmd_format,
                 fake_format,
                 filename_flat1,
                 filename_flat2,

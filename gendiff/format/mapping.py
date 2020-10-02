@@ -12,47 +12,40 @@ from gendiff import (
 from gendiff.nodes import get_children, get_name, get_status, get_value
 
 
-def mapping_default(tree, name=None, status=None):  # noqa: WPS210, WPS231
+def mapping_default(tree, name=None, status=None):
     """Return file differences without picking and sorting."""
     children = get_children(tree)
-    current_value = get_value(tree)
 
     if status is CHANGEABLE:
         return {
-            '  + {0}'.format(name): current_value.get(NEW_VALUE),
-            '  - {0}'.format(name): current_value.get(OLD_VALUE),
+            '  + {0}'.format(name): get_value(tree).get(NEW_VALUE),
+            '  - {0}'.format(name): get_value(tree).get(OLD_VALUE),
         }
 
     if not children:
-        return current_value
+        return get_value(tree)
 
     acc = {}
     for child in children:
         name = get_name(child)
         status = get_status(child)
-        if status is ADDED:  # noqa: WPS223
+        if status is ADDED:
             name = '  {0} {1}'.format('+', name)
-            acc.update({name: mapping_default(child)})
         elif status is DELETED:
             name = '  {0} {1}'.format('-', name)
-            acc.update({name: mapping_default(child)})
-        elif status is UNCHANGEABLE:
+        elif status in (UNCHANGEABLE, None):  # noqa: WPS510
             name = '    {0}'.format(name)
-            acc.update({name: mapping_default(child)})
-        elif status is None:
-            name = '    {0}'.format(name)
-            acc.update({name: mapping_default(child)})
-        elif status is CHANGEABLE:
+        if status is CHANGEABLE:
             acc.update(mapping_default(child, name=name, status=status))
+        else:
+            acc.update({name: mapping_default(child)})
     return acc
 
 
-def mapping_plain(tree):  # noqa: WPS210
+def mapping_plain(tree):
     """Return maps for format plain."""
     acc = []
-
-    def inner(node, path=None):  # noqa: WPS210, WPS430
-
+    def inner(node, path=None):
         path = path if path else []
         children = get_children(node)
         current_value = get_value(node)
@@ -73,16 +66,18 @@ def mapping_plain(tree):  # noqa: WPS210
                 if status is not None:
                     new_path.append(status)
                     acc.append(new_path)
-        return map(
-            lambda key_for_plain: (
-                '.'.join(key_for_plain[:-2]),
-                key_for_plain[-2],
-                key_for_plain[-1],
-            ),
-            filter(
-                lambda key_for_plain:
-                    key_for_plain and UNCHANGEABLE not in key_for_plain,
-                acc,
+        return list(
+            map(
+                lambda key_for_plain: (
+                    '.'.join(key_for_plain[:-2]),
+                    key_for_plain[-2],
+                    key_for_plain[-1],
+                ),
+                filter(
+                    lambda key_for_plain:
+                        key_for_plain and UNCHANGEABLE not in key_for_plain,
+                    acc,
+                ),
             ),
         )
-    return list(inner(tree))
+    return inner(tree)
