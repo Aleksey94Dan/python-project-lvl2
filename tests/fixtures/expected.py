@@ -112,32 +112,35 @@ EXPECTATION_NESTED_AST = mknode(
                 mknode(
                     name='follow',
                     status=ADDED,
-                    value=False,
+                    current_value=False,
                 ),
                 mknode(
                     name='setting1',
                     status=UNCHANGEABLE,
-                    value='Value 1',
+                    current_value='Value 1',
                 ),
                 mknode(
                     name='setting2',
                     status=DELETED,
-                    value=200,  # noqa: WPS432
+                    current_value=200,  # noqa: WPS432
                 ),
                 mknode(
                     name='setting3',
                     status=CHANGEABLE,
-                    value={OLD_VALUE: True, NEW_VALUE: {'key': 'value'}},
+                    current_value={
+                        OLD_VALUE: True,
+                        NEW_VALUE: {'key': 'value'},
+                    },
                 ),
                 mknode(
                     name='setting4',
                     status=ADDED,
-                    value='blah blah',
+                    current_value='blah blah',
                 ),
                 mknode(
                     name='setting5',
                     status=ADDED,
-                    value={'key5': 'value5'},
+                    current_value={'key5': 'value5'},
                 ),
                 mknode(
                     name='setting6',
@@ -148,7 +151,7 @@ EXPECTATION_NESTED_AST = mknode(
                                 mknode(
                                     name='wow',
                                     status=CHANGEABLE,
-                                    value={
+                                    current_value={
                                         OLD_VALUE: 'too much',
                                         NEW_VALUE: 'so much',
                                     },
@@ -158,12 +161,12 @@ EXPECTATION_NESTED_AST = mknode(
                         mknode(
                             name='key',
                             status=UNCHANGEABLE,
-                            value='value',
+                            current_value='value',
                         ),
                         mknode(
                             name='ops',
                             status=ADDED,
-                            value='vops',
+                            current_value='vops',
                         ),
                     ],
                 ),
@@ -175,24 +178,27 @@ EXPECTATION_NESTED_AST = mknode(
                 mknode(
                     name='baz',
                     status=CHANGEABLE,
-                    value={OLD_VALUE: 'bas', NEW_VALUE: 'bars'},
+                    current_value={OLD_VALUE: 'bas', NEW_VALUE: 'bars'},
                 ),
                 mknode(
                     name='foo',
                     status=UNCHANGEABLE,
-                    value='bar',
+                    current_value='bar',
                 ),
                 mknode(
                     name='nest',
                     status=CHANGEABLE,
-                    value={OLD_VALUE: {'key': 'value'}, NEW_VALUE: 'str'},
+                    current_value={
+                        OLD_VALUE: {'key': 'value'},
+                        NEW_VALUE: 'str',
+                    },
                 ),
             ],
         ),
         mknode(
             name='group2',
             status=DELETED,
-            value={
+            current_value={
                 'abc': 12345,
                 'deep': {
                     'id': 45,
@@ -202,7 +208,7 @@ EXPECTATION_NESTED_AST = mknode(
         mknode(
             name='group3',
             status=ADDED,
-            value={
+            current_value={
                 'fee': 100500,
                 'deep': {
                     'id': {

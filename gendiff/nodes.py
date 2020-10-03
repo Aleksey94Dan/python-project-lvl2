@@ -3,6 +3,8 @@
 
 """The module describes the rules for building AST."""
 
+from operator import itemgetter
+
 from gendiff import (
     ADDED,
     CHANGEABLE,
@@ -17,13 +19,13 @@ from gendiff import (
 )
 
 
-def mknode(name, status=None, children=None, value=None):  # noqa: WPS110
+def mknode(name, status=None, children=None, current_value=None):
     """Return node."""
     return {
         NAME: name,
         STATUS: status,
         CHILDREN: children,
-        VALUE: value,
+        VALUE: current_value,
     }
 
 
@@ -47,18 +49,14 @@ def get_status(node):
     return node.get(STATUS)
 
 
-def mkast(before_file, after_file):  # noqa: WPS210, WPS231
+def mkast(before_file, after_file):  # noqa: WPS210
     """Return an abstract syntax tree."""
     acc = []
 
     keys_before_change = set(before_file.keys())
     keys_after_change = set(after_file.keys())
 
-    common_keys = keys_before_change.intersection(keys_after_change)
-    added_keys = keys_after_change.difference(keys_before_change)
-    deleted_keys = keys_before_change.difference(keys_after_change)
-
-    for common_key in common_keys:
+    for common_key in keys_before_change.intersection(keys_after_change):
         before_value = before_file.get(common_key)
         after_value = after_file.get(common_key)
         if isinstance(after_value, dict) and isinstance(before_value, dict):
@@ -73,34 +71,37 @@ def mkast(before_file, after_file):  # noqa: WPS210, WPS231
                 mknode(
                     name=common_key,
                     status=UNCHANGEABLE,
-                    value=before_value,
+                    current_value=before_value,
                 ),
             )
-        elif after_value != before_value:
+        else:
             acc.append(
                 mknode(
                     name=common_key,
                     status=CHANGEABLE,
-                    value={OLD_VALUE: before_value, NEW_VALUE: after_value},
+                    current_value={
+                        OLD_VALUE: before_value,
+                        NEW_VALUE: after_value,
+                    },
                 ),
             )
 
-    for added_key in added_keys:
+    for added_key in keys_after_change.difference(keys_before_change):
         acc.append(
             mknode(
                 name=added_key,
                 status=ADDED,
-                value=after_file.get(added_key),
+                current_value=after_file.get(added_key),
             ),
         )
 
-    for deleted_key in deleted_keys:
+    for deleted_key in keys_before_change.difference(keys_after_change):
         acc.append(
             mknode(
                 name=deleted_key,
                 status=DELETED,
-                value=before_file.get(deleted_key),
+                current_value=before_file.get(deleted_key),
             ),
         )
-    acc.sort(key=lambda name_of_key: name_of_key[NAME], reverse=False)
+    acc.sort(key=itemgetter(NAME), reverse=False)
     return acc
