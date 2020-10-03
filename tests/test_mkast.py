@@ -15,9 +15,9 @@ from tests.fixtures.expected import (
 )
 
 
-def test_flat_mkast():
-    """Flat file testing."""
-    actual = mknode(
+def test_mkast():
+    """Flat and nested files testing."""
+    actual_flat = mknode(
         name=ROOT,
         children=mkast(
             get_data_from_file(filename_flat1),
@@ -25,12 +25,7 @@ def test_flat_mkast():
         ),
     )
 
-    assert EXPECTATION_FLAT_AST == actual
-
-
-def test_nested_mkast():
-    """Nested file testing."""
-    actual = mknode(
+    actual_nested = mknode(
         name=ROOT,
         children=mkast(
             get_data_from_file(filename_nested1),
@@ -38,4 +33,5 @@ def test_nested_mkast():
         ),
     )
 
-    assert EXPECTATION_NESTED_AST == actual
+    assert EXPECTATION_NESTED_AST == actual_nested
+    assert EXPECTATION_FLAT_AST == actual_flat
