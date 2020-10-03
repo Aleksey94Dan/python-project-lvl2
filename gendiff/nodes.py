@@ -86,22 +86,20 @@ def mkast(before_file, after_file):  # noqa: WPS210, WPS231
             )
 
     for added_key in added_keys:
-        after_value = after_file.get(added_key)
         acc.append(
             mknode(
                 name=added_key,
                 status=ADDED,
-                value=after_value,
+                value=after_file.get(added_key),
             ),
         )
 
     for deleted_key in deleted_keys:
-        before_value = before_file.get(deleted_key)
         acc.append(
             mknode(
                 name=deleted_key,
                 status=DELETED,
-                value=before_value,
+                value=before_file.get(deleted_key),
             ),
         )
     acc.sort(key=lambda name_of_key: name_of_key[NAME], reverse=False)
