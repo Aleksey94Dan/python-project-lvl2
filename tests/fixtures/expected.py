@@ -7,7 +7,6 @@ from operator import itemgetter
 from gendiff import (
     ADDED,
     CHANGEABLE,
-    CHILDREN,
     DELETED,
     NAME,
     NEW_VALUE,
@@ -25,15 +24,9 @@ fake_flat = 'tests/fixtures/flat_files/file1.ymls'
 fake_format = 'ini'
 cmd_format = '-f'
 extension = ('default', 'json', 'plain')
+nested_default = 'tests/fixtures/expectation_nested_default.txt'
+nested_plain = 'tests/fixtures/expectation_plain.txt'
 
-EXPECTATION_FOR_FLAT_MAPPING_DEFAULT = {  # noqa: WPS407
-    '  - follow': False,
-    '    host': 'hexlet.io',
-    '  - proxy': '123.234.53.22',
-    '  - timeout': 50,
-    '  + timeout': 20,
-    '  + verbose': True,
-}
 
 EXPECTATION_FOR_NESTED_MAPPING_DEFAULT = {  # noqa: WPS407
     '    common': {
@@ -82,13 +75,6 @@ EXPECTATION_FOR_NESTED_MAPPING_DEFAULT = {  # noqa: WPS407
     },
 }
 
-EXPECTATION_FOR_FLAT_MAPPING_PLAIN = (
-    ('follow', False, DELETED),
-    ('proxy', '123.234.53.22', DELETED),
-    ('verbose', True, ADDED),
-    ('timeout', {OLD_VALUE: 50, NEW_VALUE: 20}, CHANGEABLE),
-)
-
 
 EXPECTATION_FOR_NESTED_MAPPING_PLAIN = (
     ('common.follow', False, ADDED),
@@ -116,41 +102,6 @@ EXPECTATION_FOR_NESTED_MAPPING_PLAIN = (
     ('group3', {'fee': 100500, 'deep': {'id': {'number': 45}}}, ADDED),
 )
 
-EXPECTATION_FLAT_AST = mknode(
-    name='root',
-    children=[
-        mknode(
-            name='host',
-            status=UNCHANGEABLE,
-            value='hexlet.io',
-        ),
-        mknode(
-            name='timeout',
-            status=CHANGEABLE,
-            value={OLD_VALUE: 50, NEW_VALUE: 20},
-        ),
-        mknode(
-            name='proxy',
-            status=DELETED,
-            value='123.234.53.22',
-        ),
-        mknode(
-            name='follow',
-            status=DELETED,
-            value=False,
-        ),
-        mknode(
-            name='verbose',
-            status=ADDED,
-            value=True,
-        ),
-    ],
-)
-
-EXPECTATION_FLAT_AST[CHILDREN].sort(
-    key=itemgetter(NAME),
-    reverse=False,
-)
 
 EXPECTATION_NESTED_AST = mknode(
     name=ROOT,
@@ -268,10 +219,7 @@ def _sorted(node):
     """Sorted nested structure."""
     children = get_children(node)
     if children:
-        children.sort(
-            key=itemgetter(NAME),
-            reverse=False,
-        )
+        children.sort(key=itemgetter(NAME), reverse=False)
     else:
         return
     for child in children:
@@ -280,78 +228,8 @@ def _sorted(node):
 
 _sorted(EXPECTATION_NESTED_AST)
 
+with open(nested_default) as nested:
+    EXPECTATION_NESTED_DEFAULT = nested.read()
 
-EXPECTATION_FLAT_DEFAULT = """
-{
-  - follow: false
-    host: hexlet.io
-  - proxy: 123.234.53.22
-  + timeout: 20
-  - timeout: 50
-  + verbose: true
-}
-"""
-
-
-EXPECTATION_NESTED_DEFAULT = """
-{
-    common: {
-      + follow: false
-        setting1: Value 1
-      - setting2: 200
-      - setting3: true
-      + setting3: {
-            key: value
-        }
-      + setting4: blah blah
-      + setting5: {
-            key5: value5
-        }
-        setting6: {
-            doge: {
-              - wow: too much
-              + wow: so much
-            }
-            key: value
-          + ops: vops
-        }
-    }
-    group1: {
-      - baz: bas
-      + baz: bars
-        foo: bar
-      - nest: {
-            key: value
-        }
-      + nest: str
-    }
-  - group2: {
-        abc: 12345
-        deep: {
-            id: 45
-        }
-    }
-  + group3: {
-        fee: 100500
-        deep: {
-            id: {
-                number: 45
-            }
-        }
-    }
-}
-"""
-
-EXPECTATION_PLAIN = """
-Property 'common.follow' was added with value: false
-Property 'common.setting2' was removed
-Property 'common.setting3' was updated. From true to [complex value]
-Property 'common.setting4' was added with value: 'blah blah'
-Property 'common.setting5' was added with value: [complex value]
-Property 'common.setting6.doge.wow' was updated. From 'too much' to 'so much'
-Property 'common.setting6.ops' was added with value: 'vops'
-Property 'group1.baz' was updated. From 'bas' to 'bars'
-Property 'group1.nest' was updated. From [complex value] to 'str'
-Property 'group2' was removed
-Property 'group3' was added with value: [complex value]
-"""
+with open(nested_plain) as plain:
+    EXPECTATION_PLAIN = plain.read()
