@@ -12,7 +12,7 @@ from gendiff import (
 from gendiff.nodes import get_children, get_name, get_status, get_value
 
 
-def mapping_default(tree, name=None, status=None):
+def mapping_default(tree, name=None, status=None):  # noqa: WPS231
     """Return file differences without picking and sorting."""
     children = get_children(tree)
 
@@ -42,10 +42,11 @@ def mapping_default(tree, name=None, status=None):
     return acc
 
 
-def mapping_plain(tree):
+def mapping_plain(tree):  # noqa: WPS210
     """Return maps for format plain."""
     acc = []
-    def inner(node, path=None):
+
+    def inner(node, path=None):  # noqa: WPS430, WPS210
         path = path if path else []
         children = get_children(node)
         current_value = get_value(node)
