@@ -2,7 +2,6 @@
 
 
 """The module describes the rules for building AST."""
-
 from operator import itemgetter
 
 from gendiff import (
@@ -56,7 +55,11 @@ def mkast(before_file, after_file):  # noqa: WPS210
     keys_before_change = set(before_file.keys())
     keys_after_change = set(after_file.keys())
 
-    for common_key in keys_before_change.intersection(keys_after_change):
+    common_keys = keys_before_change.intersection(keys_after_change)
+    added_keys = keys_after_change.difference(keys_before_change)
+    deleted_keys = keys_before_change.difference(keys_after_change)
+
+    for common_key in common_keys:
         before_value = before_file.get(common_key)
         after_value = after_file.get(common_key)
         if isinstance(after_value, dict) and isinstance(before_value, dict):
@@ -86,7 +89,7 @@ def mkast(before_file, after_file):  # noqa: WPS210
                 ),
             )
 
-    for added_key in keys_after_change.difference(keys_before_change):
+    for added_key in added_keys:
         acc.append(
             mknode(
                 name=added_key,
@@ -95,7 +98,7 @@ def mkast(before_file, after_file):  # noqa: WPS210
             ),
         )
 
-    for deleted_key in keys_before_change.difference(keys_after_change):
+    for deleted_key in deleted_keys:
         acc.append(
             mknode(
                 name=deleted_key,
