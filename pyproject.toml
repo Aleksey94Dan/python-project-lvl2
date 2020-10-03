@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "Aleksey94dan-gendiff"
-version = "0.9.1"
+version = "0.10.0"
 description = "This utility looks for differences in configuration files."
 
 authors = ["Aleksey Danilchenko <danilchenko.aleksey94@gmail.com>"]
