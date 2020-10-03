@@ -22,14 +22,8 @@ jobs:
         run: |
           pip install poetry
           make install
-          poetry update --lock
       - name: Run linter and pytest
         run: |
           make check
           make lint
-          make test
-            
-            
-          
-            
-            
+          make test           
