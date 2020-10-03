@@ -8,10 +8,8 @@ SIGN = '  '
 def _inner(node, indent=0, string=None):
     string = string if string else ''
     for vertex, child in node.items():
-        if isinstance(child, bool):
-            child = str(child).lower()
-        if ' ' not in str(vertex):
-            vertex = SIGN + str(vertex)
+        vertex = SIGN + str(vertex) if ' ' not in str(vertex) else vertex
+        child = str(child).lower() if isinstance(child, bool) else child
         if isinstance(child, dict):
             string = string + '{0}{1}: {{\n'.format(indent * SIGN, vertex)
             string = string + _inner(child, indent + 2)
