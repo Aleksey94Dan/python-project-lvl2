@@ -11,7 +11,7 @@ This program builds the difference between two files. She knows how to work with
 # Requirements
 
 You must have python version 3.6 installed. or higher.
-Also you must have pip installed - The Python Package Installer¶
+Also you must have pip installed - The Python Package Installer.
 
 # Installation
 
