@@ -3,18 +3,18 @@
 """Return the difference between two files."""
 
 from gendiff import ROOT
-from gendiff.nodes import mkast, mknode
+from gendiff.nodes import make_tree, make_node
 
 
-def generate_diff(arg1, arg2, format_):
+def generate_diff(arg1, arg2, format):
     """
     Difference conclusion.
 
     Return the difference between two files according
     to the formatting function.
     """
-    diff = mknode(
+    diff = make_node(
         name=ROOT,
-        children=mkast(arg1, arg2),
+        children=make_tree(arg1, arg2),
     )
-    return format_(diff)
+    return format(diff)

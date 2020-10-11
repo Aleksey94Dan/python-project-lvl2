@@ -18,7 +18,7 @@ from gendiff import (
 )
 
 
-def mknode(name, status=None, children=None, current_value=None):
+def make_node(name, status=None, children=None, current_value=None):
     """Return node."""
     return {
         NAME: name,
@@ -28,27 +28,7 @@ def mknode(name, status=None, children=None, current_value=None):
     }
 
 
-def get_children(node):
-    """Return children of node."""
-    return node.get(CHILDREN)
-
-
-def get_name(node):
-    """Return name of node."""
-    return node.get(NAME)
-
-
-def get_value(node):
-    """Return value of node."""
-    return node.get(VALUE)
-
-
-def get_status(node):
-    """Return status of node."""
-    return node.get(STATUS)
-
-
-def mkast(before_file, after_file):  # noqa: WPS210
+def make_tree(before_file, after_file):  # noqa: WPS210
     """Return an abstract syntax tree."""
     acc = []
 
@@ -64,14 +44,14 @@ def mkast(before_file, after_file):  # noqa: WPS210
         after_value = after_file.get(common_key)
         if isinstance(after_value, dict) and isinstance(before_value, dict):
             acc.append(
-                mknode(
+                make_node(
                     name=common_key,
-                    children=mkast(before_value, after_value),
+                    children=make_tree(before_value, after_value),
                 ),
             )
         elif after_value == before_value:
             acc.append(
-                mknode(
+                make_node(
                     name=common_key,
                     status=UNCHANGEABLE,
                     current_value=before_value,
@@ -79,7 +59,7 @@ def mkast(before_file, after_file):  # noqa: WPS210
             )
         else:
             acc.append(
-                mknode(
+                make_node(
                     name=common_key,
                     status=CHANGEABLE,
                     current_value={
@@ -91,7 +71,7 @@ def mkast(before_file, after_file):  # noqa: WPS210
 
     for added_key in added_keys:
         acc.append(
-            mknode(
+            make_node(
                 name=added_key,
                 status=ADDED,
                 current_value=after_file.get(added_key),
@@ -100,7 +80,7 @@ def mkast(before_file, after_file):  # noqa: WPS210
 
     for deleted_key in deleted_keys:
         acc.append(
-            mknode(
+            make_node(
                 name=deleted_key,
                 status=DELETED,
                 current_value=before_file.get(deleted_key),
@@ -108,3 +88,4 @@ def mkast(before_file, after_file):  # noqa: WPS210
         )
     acc.sort(key=itemgetter(NAME), reverse=False)
     return acc
+

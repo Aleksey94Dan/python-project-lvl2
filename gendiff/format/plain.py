@@ -18,7 +18,7 @@ def _helper(arg1):
     return "'{0}'".format(arg1)
 
 
-def format_(source):
+def format(source):
     """Print plain."""
     string = ''
     for values_item in source:

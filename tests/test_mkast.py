@@ -3,8 +3,8 @@
 """Test for building AST."""
 
 from gendiff import ROOT
-from gendiff.nodes import mkast, mknode
-from gendiff.parsers import get_data_from_file
+from gendiff.nodes import make_tree, make_node
+from gendiff.files import load
 from tests.fixtures.expected import (
     EXPECTATION_NESTED_AST,
     filename_nested1,
@@ -12,13 +12,13 @@ from tests.fixtures.expected import (
 )
 
 
-def test_mkast():
+def test_make_tree():
     """Nested files testing."""
-    actual = mknode(
+    actual = make_node(
         name=ROOT,
-        children=mkast(
-            get_data_from_file(filename_nested1),
-            get_data_from_file(filename_nested2),
+        children=make_tree(
+            load(filename_nested1),
+            load(filename_nested2),
         ),
     )
 

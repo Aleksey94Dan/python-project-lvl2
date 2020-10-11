@@ -8,27 +8,30 @@ from gendiff import (
     NEW_VALUE,
     OLD_VALUE,
     UNCHANGEABLE,
+    CHILDREN,
+    VALUE,
+    NAME,
+    STATUS,
 )
-from gendiff.nodes import get_children, get_name, get_status, get_value
 
 
 def mapping_default(tree, name=None, status=None):  # noqa: WPS231
     """Return file differences without picking and sorting."""
-    children = get_children(tree)
+    children = tree.get(CHILDREN)
 
     if status is CHANGEABLE:
         return {
-            '  + {0}'.format(name): get_value(tree).get(NEW_VALUE),
-            '  - {0}'.format(name): get_value(tree).get(OLD_VALUE),
+            '  + {0}'.format(name): tree.get(VALUE).get(NEW_VALUE),
+            '  - {0}'.format(name): tree.get(VALUE).get(OLD_VALUE),
         }
 
     if not children:
-        return get_value(tree)
+        return tree.get(VALUE)
 
     acc = {}
     for child in children:
-        name = get_name(child)
-        status = get_status(child)
+        name = child.get(NAME)
+        status = child.get(STATUS)
         if status is ADDED:
             name = '  {0} {1}'.format('+', name)
         elif status is DELETED:
@@ -48,8 +51,8 @@ def mapping_plain(tree):  # noqa: WPS210
 
     def inner(node, path=None):  # noqa: WPS430, WPS210
         path = path if path else []
-        children = get_children(node)
-        current_value = get_value(node)
+        children = node.get(CHILDREN)
+        current_value = node.get(VALUE)
 
         if not children:
             path.append(current_value)
@@ -57,8 +60,8 @@ def mapping_plain(tree):  # noqa: WPS210
 
         for child in children:
             new_path = path.copy()
-            name = get_name(child)
-            status = get_status(child)
+            name = child.get(NAME)
+            status = child.get(STATUS)
 
             if child:
                 if name not in path:

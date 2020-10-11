@@ -21,6 +21,6 @@ def _inner(node, indent=0, string=None):
     return string
 
 
-def format_(source):
+def format(source):
     """Print default."""
     return '{{\n{0}}}\n'.format(_inner(source))

@@ -13,8 +13,9 @@ from gendiff import (
     OLD_VALUE,
     ROOT,
     UNCHANGEABLE,
+    CHILDREN
 )
-from gendiff.nodes import get_children, mknode
+from gendiff.nodes import make_node
 
 filename_flat1 = 'tests/fixtures/flat_files/file1.yml'
 filename_flat2 = 'tests/fixtures/flat_files/file2.json'
@@ -103,28 +104,28 @@ EXPECTATION_FOR_NESTED_MAPPING_PLAIN = (
 )
 
 
-EXPECTATION_NESTED_AST = mknode(
+EXPECTATION_NESTED_AST = make_node(
     name=ROOT,
     children=[
-        mknode(
+        make_node(
             name='common',
             children=[
-                mknode(
+                make_node(
                     name='follow',
                     status=ADDED,
                     current_value=False,
                 ),
-                mknode(
+                make_node(
                     name='setting1',
                     status=UNCHANGEABLE,
                     current_value='Value 1',
                 ),
-                mknode(
+                make_node(
                     name='setting2',
                     status=DELETED,
                     current_value=200,  # noqa: WPS432
                 ),
-                mknode(
+                make_node(
                     name='setting3',
                     status=CHANGEABLE,
                     current_value={
@@ -132,23 +133,23 @@ EXPECTATION_NESTED_AST = mknode(
                         NEW_VALUE: {'key': 'value'},
                     },
                 ),
-                mknode(
+                make_node(
                     name='setting4',
                     status=ADDED,
                     current_value='blah blah',
                 ),
-                mknode(
+                make_node(
                     name='setting5',
                     status=ADDED,
                     current_value={'key5': 'value5'},
                 ),
-                mknode(
+                make_node(
                     name='setting6',
                     children=[
-                        mknode(
+                        make_node(
                             name='doge',
                             children=[
-                                mknode(
+                                make_node(
                                     name='wow',
                                     status=CHANGEABLE,
                                     current_value={
@@ -158,12 +159,12 @@ EXPECTATION_NESTED_AST = mknode(
                                 ),
                             ],
                         ),
-                        mknode(
+                        make_node(
                             name='key',
                             status=UNCHANGEABLE,
                             current_value='value',
                         ),
-                        mknode(
+                        make_node(
                             name='ops',
                             status=ADDED,
                             current_value='vops',
@@ -172,20 +173,20 @@ EXPECTATION_NESTED_AST = mknode(
                 ),
             ],
         ),
-        mknode(
+        make_node(
             name='group1',
             children=[
-                mknode(
+                make_node(
                     name='baz',
                     status=CHANGEABLE,
                     current_value={OLD_VALUE: 'bas', NEW_VALUE: 'bars'},
                 ),
-                mknode(
+                make_node(
                     name='foo',
                     status=UNCHANGEABLE,
                     current_value='bar',
                 ),
-                mknode(
+                make_node(
                     name='nest',
                     status=CHANGEABLE,
                     current_value={
@@ -195,7 +196,7 @@ EXPECTATION_NESTED_AST = mknode(
                 ),
             ],
         ),
-        mknode(
+        make_node(
             name='group2',
             status=DELETED,
             current_value={
@@ -205,7 +206,7 @@ EXPECTATION_NESTED_AST = mknode(
                 },
             },
         ),
-        mknode(
+        make_node(
             name='group3',
             status=ADDED,
             current_value={
@@ -223,7 +224,7 @@ EXPECTATION_NESTED_AST = mknode(
 
 def _sorted(node):
     """Sorted nested structure."""
-    children = get_children(node)
+    children = node.get(CHILDREN)
     if children:
         children.sort(key=itemgetter(NAME), reverse=False)
     else:
