@@ -6,3 +6,5 @@ dist/
 
 .git/
 *.egg-info
+
+.coverage
