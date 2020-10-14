@@ -5,15 +5,14 @@
 """The main parsing script."""
 
 
-
 from gendiff import cli
-from gendiff.diif import generate_diff
+from gendiff.diff import generate_diff
 
 
 def main():
     """Run a code."""
-    old, new, format = cli.parse()
-    generate_diff(old, new, format)
+    old, new, formater = cli.parse()
+    print(generate_diff(old, new, formater))  # noqa: T001
 
 
 if __name__ == '__main__':

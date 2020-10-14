@@ -4,18 +4,17 @@
 """The module describes the rules for building AST."""
 from operator import itemgetter
 
-from gendiff import (
-    ADDED,
-    CHANGEABLE,
-    CHILDREN,
-    DELETED,
-    NAME,
-    NEW_VALUE,
-    OLD_VALUE,
-    STATUS,
-    UNCHANGEABLE,
-    VALUE,
-)
+ADDED = 'added'
+DELETED = 'deleted'
+UNCHANGEABLE = 'unchangeable'
+CHANGEABLE = 'changeable'
+STATUS = 'status'
+KEY = 'key'
+VALUE = 'value'
+NEW_VALUE = 'new_value'
+OLD_VALUE = 'old_value'
+CHILDREN = 'children'
+NAME = 'name'
 
 
 def make_node(name, status=None, children=None, current_value=None):
@@ -31,13 +30,9 @@ def make_node(name, status=None, children=None, current_value=None):
 def make_tree(before_file, after_file):  # noqa: WPS210
     """Return an abstract syntax tree."""
     acc = []
-
-    keys_before_change = set(before_file.keys())
-    keys_after_change = set(after_file.keys())
-
-    common_keys = keys_before_change.intersection(keys_after_change)
-    added_keys = keys_after_change.difference(keys_before_change)
-    deleted_keys = keys_before_change.difference(keys_after_change)
+    common_keys = before_file.keys() & after_file.keys()
+    added_keys = after_file.keys() - before_file.keys()
+    deleted_keys = before_file.keys() - after_file.keys()
 
     for common_key in common_keys:
         before_value = before_file.get(common_key)
@@ -88,4 +83,3 @@ def make_tree(before_file, after_file):  # noqa: WPS210
         )
     acc.sort(key=itemgetter(NAME), reverse=False)
     return acc
-

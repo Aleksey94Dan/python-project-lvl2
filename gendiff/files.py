@@ -1,9 +1,11 @@
+# -*- coding:utf-8 -*-
+
+"""Uploads YAML and Json files."""
 import argparse
 import json
 import os
 
 import yaml
-
 
 
 def _get_loader(extension):
@@ -20,7 +22,7 @@ def load(path):
     _, extension = os.path.splitext(path_to_file)
     if not _get_loader(extension):
         raise argparse.ArgumentTypeError(
-            'Unsupported  {0} extension'.format(extension),
+            'Unsupported {0} extension'.format(extension),
         )
     with open(path_to_file) as file_name:
         return _get_loader(extension)(file_name)

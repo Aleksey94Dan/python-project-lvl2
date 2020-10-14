@@ -1,6 +1,9 @@
-from gendiff import format
-from gendiff.files import load
+# -*- coding:utf-8 -*-
+
+"""Parser for command-line options,arguments and extenstions."""
 import argparse
+
+from gendiff import files, format
 
 
 def formatter(name):
@@ -25,8 +28,8 @@ def parse():
         prog='gendiff',
         description='Generate diff',
     )
-    parser.add_argument('old', type=load)
-    parser.add_argument('new', type=load)
+    parser.add_argument('old', type=files.load)
+    parser.add_argument('new', type=files.load)
     parser.add_argument(
         '-f',
         '--format',

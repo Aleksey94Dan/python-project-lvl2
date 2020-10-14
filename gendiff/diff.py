@@ -2,11 +2,12 @@
 
 """Return the difference between two files."""
 
-from gendiff import ROOT
-from gendiff.nodes import make_tree, make_node
+from gendiff.nodes import make_node, make_tree
+
+ROOT = 'root'
 
 
-def generate_diff(arg1, arg2, format):
+def generate_diff(old, new, format):  # noqa: A002
     """
     Difference conclusion.
 
@@ -15,6 +16,6 @@ def generate_diff(arg1, arg2, format):
     """
     diff = make_node(
         name=ROOT,
-        children=make_tree(arg1, arg2),
+        children=make_tree(old, new),
     )
     return format(diff)
