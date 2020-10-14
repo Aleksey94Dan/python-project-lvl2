@@ -35,16 +35,6 @@ def helper(path_to_file):
         format.default,
         'tests/fixtures/expectation/expectation_nested_default.txt',
     ),
-],
-)
-def test_stylish(file1, file2, out_format, expectation):
-    """Test default for flat and nested."""
-    old = files.load(file1)
-    new = files.load(file2)
-    assert generate_diff(old, new, out_format) == helper(expectation)
-
-
-@pytest.mark.parametrize('file1, file2, out_format, expectation', [
     (
         FLAT1,
         FLAT2,
@@ -59,8 +49,8 @@ def test_stylish(file1, file2, out_format, expectation):
     ),
 ],
 )
-def test_plain(file1, file2, out_format, expectation):
-    """Test plain for flat and nested.."""
+def test_stylish_and_plain(file1, file2, out_format, expectation):
+    """Test default for flat and nested."""
     old = files.load(file1)
     new = files.load(file2)
     assert generate_diff(old, new, out_format) == helper(expectation)
