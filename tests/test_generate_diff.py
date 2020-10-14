@@ -14,6 +14,13 @@ FLAT2 = 'tests/fixtures/flat_files/file2.yml'
 NESTED1 = 'tests/fixtures/nested_files/file1.json'
 NESTED2 = 'tests/fixtures/nested_files/file2.yml'
 FAKE_JSON = 'tests/fixtures/flat_files/file3.JSON'
+EMPTY_FILE1 = 'tests/fixtures/flat_files/empty1.json'
+EMPTY_FILE2 = 'tests/fixtures/flat_files/empty2.json'
+
+
+ERROR_MESSAGE1 = 'Unsupported .JSON extension'
+ERROR_MESSAGE2 = 'Incorrect structure files.'
+ERROR_MESSAGE3 = 'Become familiar with the JSON/YAML compilation rules.'
 
 
 def helper(path_to_file):
@@ -85,11 +92,17 @@ def test_json(file1, file2, out_format, expectation):
         FLAT1,
         FAKE_JSON,
         format.json,
-        'Unsupported .JSON extension',
+        ERROR_MESSAGE1,
+    ),
+    (
+        EMPTY_FILE1,
+        EMPTY_FILE2,
+        format.json,
+        ' '.join((ERROR_MESSAGE2, ERROR_MESSAGE3)),
     ),
 ],
 )
-def test_exception_extension(file1, file2, out_format, message):
+def test_exception(file1, file2, out_format, message):
     """Test exceptions for format and extension."""
     with pytest.raises(Exception, match=message):
         generate_diff(files.load(file1), files.load(file2), out_format)
