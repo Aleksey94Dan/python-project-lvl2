@@ -28,7 +28,7 @@ To display the difference in stylish format, enter the following command:
     gendiff --format default path/to/file1 path/to/file2
     gendiff path/to/file1 path/to/file2
 
-[![asciicast](https://asciinema.org/a/sYmLOgg8aJ5N0itDmJiEynksL.svg)](https://asciinema.org/a/sYmLOgg8aJ5N0itDmJiEynksL)
+[![asciicast](https://asciinema.org/a/vuNJQWw3cX2N4tXpFJAiD9biA.svg)](https://asciinema.org/a/vuNJQWw3cX2N4tXpFJAiD9biA)
 
 # Plain
 
@@ -37,7 +37,7 @@ To display the difference in plain format, enter the following command:
     gendiff -f plain path/to/file1 path/to/file2
     gendiff --format plain path/to/file1 path/to/file2
 
-[![asciicast](https://asciinema.org/a/TLfPKjvkZZOQpH85CYkpuzBPW.svg)](https://asciinema.org/a/TLfPKjvkZZOQpH85CYkpuzBPW)
+[![asciicast](https://asciinema.org/a/Czl8Bn2DKhBvWR6HZDZr9nHEx.svg)](https://asciinema.org/a/Czl8Bn2DKhBvWR6HZDZr9nHEx)
 
 
 # Json
@@ -46,7 +46,7 @@ To display the difference in json format, enter the following command:
     gendiff -f json path/to/file1 path/to/file2
     gendiff --format json path/to/file1 path/to/file2
 
-[![asciicast](https://asciinema.org/a/smKwj45nCbkvbHge9AREQedRw.svg)](https://asciinema.org/a/smKwj45nCbkvbHge9AREQedRw)
+[![asciicast](https://asciinema.org/a/Axx2cEeOSlJS3Br18gVXtLPrn.svg)](https://asciinema.org/a/Axx2cEeOSlJS3Br18gVXtLPrn)
 
 # This is what happens if you enter an unsupported format or extension.
 
