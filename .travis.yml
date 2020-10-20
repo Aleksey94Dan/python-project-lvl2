@@ -17,4 +17,4 @@ script:
   - coverage report --fail-under=80
 
 after_success:
-  - codeclimate-test-reporter --file .coverage --debug
+  - codeclimate-test-reporter --file .coverage --upload
