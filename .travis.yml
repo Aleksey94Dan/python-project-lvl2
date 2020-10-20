@@ -1,19 +1,18 @@
 env:
-  global:
-    - CC_TEST_REPORTER_ID = ${{ secrets.CC_TEST_REPORTER_ID }}
+  - CODECLIMATE_REPO_TOKEN= ${{ secrets.CC_TEST_REPORTER_ID }}
 language: python
 python: 3.7
 
-before_script:
-  - curl -L https://codeclimate.com/downloads/test-reporter/test-reporter-latest-linux-amd64 > ./cc-test-reporter
-  - chmod +x ./cc-test-reporter
-  - ./cc-test-reporter before-build
+install: make
+
+before_install:
   - pip install poetry
+
+intstall:
   - make install
 
 script:
   - make lint
   - make test
-
 after_success:
-  - ./cc-test-reporter after-build --exit-code $TRAVIS_TEST_RESULT
+  - codeclimate-test-reporter --file .coverage
