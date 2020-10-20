@@ -15,4 +15,4 @@ script:
   - make lint
   - make test
 after_success:
-  - codeclimate-test-reporter --file .coverage
+  - codeclimate-test-reporter --file .coverage --debug
