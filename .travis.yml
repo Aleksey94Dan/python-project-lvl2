@@ -14,5 +14,6 @@ intstall:
 script:
   - make lint
   - make test
+
 after_success:
   - codeclimate-test-reporter --file .coverage --debug
