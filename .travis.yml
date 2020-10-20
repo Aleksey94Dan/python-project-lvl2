@@ -15,5 +15,4 @@ script:
   - make lint
   - make test
 after_script:
-  - coverage xml
-  - ./cc-test-reporter after-build --exit-code $TRAVIS_TEST_RESULT
+  - ./cc-test-reporter after-build --id CC_TEST_REPORTER_ID --coverage-input-type .coverage
