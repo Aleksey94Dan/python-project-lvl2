@@ -18,4 +18,4 @@ script:
   - make lint
   - make test
 after_success:
-  - codeclimate-test-reporter -t coverage.py --debug
+  - codeclimate-test-reporter -t CODECLIMATE_REPO_TOKEN
