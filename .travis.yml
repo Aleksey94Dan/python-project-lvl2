@@ -1,3 +1,6 @@
+branches:
+  only:
+  - master
 env:
   - CODECLIMATE_REPO_TOKEN= ${{ secrets.CC_TEST_REPORTER_ID }}
 language: python
@@ -16,7 +19,3 @@ script:
   - make test
 after_success:
   - codeclimate-test-reporter --file .coverage
-
-branches:
-  only:
-  - master
