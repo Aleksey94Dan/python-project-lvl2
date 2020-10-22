@@ -2,6 +2,3 @@
 version: "2"
 exclude_patterns:
  - "gendiff/scripts/*.py"
-engines:
-  duplication:
-    enabled: true
