@@ -9,15 +9,18 @@ import pytest
 from gendiff import files, format
 from gendiff.diff import generate_diff
 
-FLAT1 = 'tests/fixtures/flat_files/file1.json'
-FLAT2 = 'tests/fixtures/flat_files/file2.yml'
-NESTED1 = 'tests/fixtures/nested_files/file1.json'
-NESTED2 = 'tests/fixtures/nested_files/file2.yml'
-FAKE_JSON = 'tests/fixtures/flat_files/file3.JSON'
-EMPTY_FILE1 = 'tests/fixtures/flat_files/empty1.json'
-EMPTY_FILE2 = 'tests/fixtures/flat_files/empty2.json'
-
-
+FLAT1 = 'tests/fixtures/flat_1.json'
+FLAT2 = 'tests/fixtures/flat_2.yml'
+NESTED1 = 'tests/fixtures/nested_1.json'
+NESTED2 = 'tests/fixtures/nested_2.yml'
+FAKE_JSON = 'tests/fixtures/fake.JSON'
+EMPTY_FILE = 'tests/fixtures/flat_empty.json'
+FLAT_OUT_DEFAULT = 'tests/fixtures/flat_out_default.txt'
+FLAT_OUT_PLAIN = 'tests/fixtures/flat_out_plain.txt'
+FLAT_OUT_JSON = 'tests/fixtures/flat_out_json.json'
+NESTED_OUT_DEFAULT = 'tests/fixtures/nested_out_default.txt'
+NESTED_OUT_PLAIN = 'tests/fixtures/nested_out_plain.txt'
+NESTED_OUT_JSON = 'tests/fixtures/nested_out_json.json'
 ERROR_MESSAGE1 = 'Unsupported .JSON extension'
 ERROR_MESSAGE2 = (
     'Incorrect structure files. '
@@ -32,30 +35,10 @@ def read(path_to_file):
 
 
 @pytest.mark.parametrize('file1, file2, out_format, expectation', [
-    (
-        FLAT1,
-        FLAT2,
-        format.default,
-        'tests/fixtures/expectation/expactation_flat_default.txt',
-    ),
-    (
-        NESTED1,
-        NESTED2,
-        format.default,
-        'tests/fixtures/expectation/expectation_nested_default.txt',
-    ),
-    (
-        FLAT1,
-        FLAT2,
-        format.plain,
-        'tests/fixtures/expectation/expactation_flat_plain.txt',
-    ),
-    (
-        NESTED1,
-        NESTED2,
-        format.plain,
-        'tests/fixtures/expectation/expectation_nested_plain.txt',
-    ),
+    (FLAT1, FLAT2, format.default, FLAT_OUT_DEFAULT),
+    (NESTED1, NESTED2, format.default, NESTED_OUT_DEFAULT),
+    (FLAT1, FLAT2, format.plain, FLAT_OUT_PLAIN),
+    (NESTED1, NESTED2, format.plain, NESTED_OUT_PLAIN),
 ],
 )
 def test_stylish_and_plain(file1, file2, out_format, expectation):
@@ -66,18 +49,8 @@ def test_stylish_and_plain(file1, file2, out_format, expectation):
 
 
 @pytest.mark.parametrize('file1, file2, out_format, expectation', [
-    (
-        FLAT1,
-        FLAT2,
-        format.json,
-        'tests/fixtures/expectation/expectation_flat_json.json',
-    ),
-    (
-        NESTED1,
-        NESTED2,
-        format.json,
-        'tests/fixtures/expectation/expactation_nested_json.json',
-    ),
+    (FLAT1, FLAT2, format.json, FLAT_OUT_JSON),
+    (NESTED1, NESTED2, format.json, NESTED_OUT_JSON),
 ],
 )
 def test_json(file1, file2, out_format, expectation):
@@ -90,18 +63,8 @@ def test_json(file1, file2, out_format, expectation):
 
 
 @pytest.mark.parametrize('file1, file2, out_format, message', [
-    (
-        FLAT1,
-        FAKE_JSON,
-        format.json,
-        ERROR_MESSAGE1,
-    ),
-    (
-        EMPTY_FILE1,
-        EMPTY_FILE2,
-        format.json,
-        ERROR_MESSAGE2,
-    ),
+    (FLAT1, FAKE_JSON, format.json, ERROR_MESSAGE1),
+    (EMPTY_FILE, EMPTY_FILE, format.json, ERROR_MESSAGE2),
 ],
 )
 def test_exception(file1, file2, out_format, message):
