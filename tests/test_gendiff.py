@@ -19,11 +19,13 @@ EMPTY_FILE2 = 'tests/fixtures/flat_files/empty2.json'
 
 
 ERROR_MESSAGE1 = 'Unsupported .JSON extension'
-ERROR_MESSAGE2 = 'Incorrect structure files.'
-ERROR_MESSAGE3 = 'Become familiar with the JSON/YAML compilation rules.'
+ERROR_MESSAGE2 = (
+    'Incorrect structure files. '
+    'Become familiar with the JSON/YAML compilation rules.'
+)
 
 
-def helper(path_to_file):
+def read(path_to_file):
     """Read file."""
     with open(path_to_file) as exptected:
         return exptected.read()
@@ -60,7 +62,7 @@ def test_stylish_and_plain(file1, file2, out_format, expectation):
     """Test default for flat and nested."""
     old = files.load(file1)
     new = files.load(file2)
-    assert generate_diff(old, new, out_format) == helper(expectation)
+    assert generate_diff(old, new, out_format) == read(expectation)
 
 
 @pytest.mark.parametrize('file1, file2, out_format, expectation', [
@@ -83,7 +85,7 @@ def test_json(file1, file2, out_format, expectation):
     old = files.load(file1)
     new = files.load(file2)
     assert json.loads(generate_diff(old, new, out_format)) == json.loads(
-        helper(expectation),
+        read(expectation),
     )
 
 
@@ -98,7 +100,7 @@ def test_json(file1, file2, out_format, expectation):
         EMPTY_FILE1,
         EMPTY_FILE2,
         format.json,
-        ' '.join((ERROR_MESSAGE2, ERROR_MESSAGE3)),
+        ERROR_MESSAGE2,
     ),
 ],
 )
