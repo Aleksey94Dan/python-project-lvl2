@@ -23,4 +23,4 @@ script:
   - make test
 
 after script:
-  - ./cc-test-reporter after-build --exit-code $TRAVIS_TEST_RESULT -r $CC_TEST_REPORTER_ID
+  - ./cc-test-reporter after-build --exit-code $TRAVIS_TEST_RESULT -r '857030422e0cb38a0e35ac8a372f601d193cd94a4d0b5f16e15659cb2ffb6a53'
