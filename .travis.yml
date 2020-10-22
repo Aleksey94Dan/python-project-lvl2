@@ -2,6 +2,7 @@ language: python
 python:
   - "3.7"
 env:
+  global:
    - CC_TEST_REPORTER_ID=${{ secrets.CC_TEST_REPORTER_ID }}
 
 install: make
@@ -22,4 +23,4 @@ script:
   - make test
 
 after script:
-  - ./cc-test-reporter after-build --exit-code $TRAVIS_TEST_RESULT -r $CC_TEST_REPORTER_ID
+  - ./cc-test-reporter after-build --exit-code $TRAVIS_TEST_RESULT
