@@ -14,7 +14,8 @@ FLAT2 = 'tests/fixtures/flat_2.yml'
 NESTED1 = 'tests/fixtures/nested_1.json'
 NESTED2 = 'tests/fixtures/nested_2.yml'
 FAKE_JSON = 'tests/fixtures/fake.JSON'
-EMPTY_FILE = 'tests/fixtures/flat_empty.json'
+EMPTY_JSON = 'tests/fixtures/empty.json'
+UNCORRECT_YML = 'tests/fixtures/uncorrect.yml'
 FLAT_OUT_DEFAULT = 'tests/fixtures/flat_out_default.txt'
 FLAT_OUT_PLAIN = 'tests/fixtures/flat_out_plain.txt'
 FLAT_OUT_JSON = 'tests/fixtures/flat_out_json.json'
@@ -24,7 +25,7 @@ NESTED_OUT_JSON = 'tests/fixtures/nested_out_json.json'
 ERROR_MESSAGE1 = 'Unsupported .JSON extension'
 ERROR_MESSAGE2 = (
     'Incorrect structure files. '
-    'Become familiar with the JSON/YAML compilation rules.'  # noqa: WPS326
+    'Become familiar with the JSON/YML compilation rules.'  # noqa: WPS326
 )
 
 
@@ -64,7 +65,8 @@ def test_json(file1, file2, out_format, expectation):
 
 @pytest.mark.parametrize('file1, file2, out_format, message', [
     (FLAT1, FAKE_JSON, format.json, ERROR_MESSAGE1),
-    (EMPTY_FILE, EMPTY_FILE, format.json, ERROR_MESSAGE2),
+    (EMPTY_JSON, EMPTY_JSON, format.json, ERROR_MESSAGE2),
+    (UNCORRECT_YML, UNCORRECT_YML, format.json, ERROR_MESSAGE2),
 ],
 )
 def test_exception(file1, file2, out_format, message):

@@ -1,0 +1,149 @@
+{
+    "name": "root",
+    "status": null,
+    "children": [
+        {
+            "name": "common",
+            "status": null,
+            "children": [
+                {
+                    "name": "follow",
+                    "status": "added",
+                    "children": null,
+                    "value": false
+                },
+                {
+                    "name": "setting1",
+                    "status": "unchangeable",
+                    "children": null,
+                    "value": "Value 1"
+                },
+                {
+                    "name": "setting2",
+                    "status": "deleted",
+                    "children": null,
+                    "value": 200
+                },
+                {
+                    "name": "setting3",
+                    "status": "changeable",
+                    "children": null,
+                    "value": {
+                        "old_value": true,
+                        "new_value": {
+                            "key": "value"
+                        }
+                    }
+                },
+                {
+                    "name": "setting4",
+                    "status": "added",
+                    "children": null,
+                    "value": "blah blah"
+                },
+                {
+                    "name": "setting5",
+                    "status": "added",
+                    "children": null,
+                    "value": {
+                        "key5": "value5"
+                    }
+                },
+                {
+                    "name": "setting6",
+                    "status": null,
+                    "children": [
+                        {
+                            "name": "doge",
+                            "status": null,
+                            "children": [
+                                {
+                                    "name": "wow",
+                                    "status": "changeable",
+                                    "children": null,
+                                    "value": {
+                                        "old_value": "too much",
+                                        "new_value": "so much"
+                                    }
+                                }
+                            ],
+                            "value": null
+                        },
+                        {
+                            "name": "key",
+                            "status": "unchangeable",
+                            "children": null,
+                            "value": "value"
+                        },
+                        {
+                            "name": "ops",
+                            "status": "added",
+                            "children": null,
+                            "value": "vops"
+                        }
+                    ],
+                    "value": null
+                }
+            ],
+            "value": null
+        },
+        {
+            "name": "group1",
+            "status": null,
+            "children": [
+                {
+                    "name": "baz",
+                    "status": "changeable",
+                    "children": null,
+                    "value": {
+                        "old_value": "bas",
+                        "new_value": "bars"
+                    }
+                },
+                {
+                    "name": "foo",
+                    "status": "unchangeable",
+                    "children": null,
+                    "value": "bar"
+                },
+                {
+                    "name": "nest",
+                    "status": "changeable",
+                    "children": null,
+                    "value": {
+                        "old_value": {
+                            "key": "value"
+                        },
+                        "new_value": "str"
+                    }
+                }
+            ],
+            "value": null
+        },
+        {
+            "name": "group2",
+            "status": "deleted",
+            "children": null,
+            "value": {
+                "abc": 12345,
+                "deep": {
+                    "id": 45
+                }
+            }
+        },
+        {
+            "name": "group3",
+            "status": "added",
+            "children": null,
+            "value": {
+                "fee": 100500,
+                "deep": {
+                    "id": {
+                        "number": 45
+                    }
+                }
+            }
+        }
+    ],
+    "value": null
+}

@@ -28,8 +28,9 @@ def parse():
         prog='gendiff',
         description='Generate diff',
     )
-    parser.add_argument('old', type=files.load)
-    parser.add_argument('new', type=files.load)
+    data_file = files.load
+    parser.add_argument('old', type=data_file)
+    parser.add_argument('new', type=data_file)
     parser.add_argument(
         '-f',
         '--format',
