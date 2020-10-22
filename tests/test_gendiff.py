@@ -21,7 +21,7 @@ EMPTY_FILE2 = 'tests/fixtures/flat_files/empty2.json'
 ERROR_MESSAGE1 = 'Unsupported .JSON extension'
 ERROR_MESSAGE2 = (
     'Incorrect structure files. '
-    'Become familiar with the JSON/YAML compilation rules.'
+    'Become familiar with the JSON/YAML compilation rules.'  # noqa: WPS326
 )
 
 
