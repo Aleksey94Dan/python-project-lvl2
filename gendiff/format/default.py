@@ -1,18 +1,7 @@
 # -*- coding:utf-8 -*-
 
 """Format default."""
-from gendiff.nodes import (
-    ADDED,
-    CHANGEABLE,
-    CHILDREN,
-    DELETED,
-    NAME,
-    NEW_VALUE,
-    OLD_VALUE,
-    STATUS,
-    UNCHANGEABLE,
-    VALUE,
-)
+from gendiff import nodes
 
 SIGN = '    '
 
@@ -41,28 +30,28 @@ def format(source):  # noqa: A001
 
 def mapping_default(tree, name=None, status=None):  # noqa: WPS231
     """Return file differences without picking and sorting."""
-    children = tree.get(CHILDREN)
+    children = tree.get(nodes.CHILDREN)
 
-    if status is CHANGEABLE:
+    if status is nodes.CHANGEABLE:
         return {
-            '  - {0}'.format(name): tree.get(VALUE).get(OLD_VALUE),
-            '  + {0}'.format(name): tree.get(VALUE).get(NEW_VALUE),
+            '  - {0}'.format(name): tree.get(nodes.VALUE).get(nodes.OLD_VALUE),
+            '  + {0}'.format(name): tree.get(nodes.VALUE).get(nodes.NEW_VALUE),
         }
 
     if not children:
-        return tree.get(VALUE)
+        return tree.get(nodes.VALUE)
 
     acc = {}
     for child in children:
-        name = child.get(NAME)
-        status = child.get(STATUS)
-        if status is DELETED:
+        name = child.get(nodes.NAME)
+        status = child.get(nodes.STATUS)
+        if status == nodes.DELETED:
             name = '  {0} {1}'.format('-', name)
-        elif status is ADDED:
+        elif status == nodes.ADDED:
             name = '  {0} {1}'.format('+', name)
-        elif status in (UNCHANGEABLE, None):  # noqa: WPS510
+        elif status in (nodes.UNCHANGEABLE, None):  # noqa: WPS510
             name = '    {0}'.format(name)
-        if status is CHANGEABLE:
+        if status == nodes.CHANGEABLE:
             acc.update(mapping_default(child, name=name, status=status))
         else:
             acc.update({name: mapping_default(child)})
