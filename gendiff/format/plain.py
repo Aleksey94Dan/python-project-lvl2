@@ -2,18 +2,7 @@
 
 """Format plain."""
 
-from gendiff.nodes import (
-    ADDED,
-    CHANGEABLE,
-    CHILDREN,
-    DELETED,
-    NAME,
-    NEW_VALUE,
-    OLD_VALUE,
-    STATUS,
-    UNCHANGEABLE,
-    VALUE,
-)
+from gendiff import nodes
 
 FOR_ADDED = "Property '{0}' was added with value: {1}"
 FOR_DELETED = "Property '{0}' was removed"

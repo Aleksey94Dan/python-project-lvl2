@@ -18,7 +18,7 @@ def _template(acc, key=None, old=None, new=None):
         old_value = old.get(key)
         new_value = new.get(key)
         if all((isinstance(old_value, dict), isinstance(new_value, dict))):
-            acc[key] = make_tree(old_value, new_value)
+            acc[key] = make_tree(old_value, new_value)  # noqa: WPS204
         elif new_value == old_value:
             acc[key] = {
                 STATUS: UNCHANGED,

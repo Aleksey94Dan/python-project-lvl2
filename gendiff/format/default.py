@@ -28,31 +28,24 @@ def format(source):  # noqa: A001
     return '{{\n{0}}}\n'.format(_inner(source))
 
 
-def mapping_default(tree, name=None, status=None):  # noqa: WPS231
+def mapping_default(tree):
     """Return file differences without picking and sorting."""
-    children = tree.get(nodes.CHILDREN)
 
-    if status is nodes.CHANGEABLE:
-        return {
-            '  - {0}'.format(name): tree.get(nodes.VALUE).get(nodes.OLD_VALUE),
-            '  + {0}'.format(name): tree.get(nodes.VALUE).get(nodes.NEW_VALUE),
-        }
+    keys = tree.keys()
 
-    if not children:
-        return tree.get(nodes.VALUE)
+    for node in nodes:
+        if node[nodes.STATUS]:
+            print()
 
-    acc = {}
-    for child in children:
-        name = child.get(nodes.NAME)
-        status = child.get(nodes.STATUS)
-        if status == nodes.DELETED:
-            name = '  {0} {1}'.format('-', name)
-        elif status == nodes.ADDED:
-            name = '  {0} {1}'.format('+', name)
-        elif status in (nodes.UNCHANGEABLE, None):  # noqa: WPS510
-            name = '    {0}'.format(name)
-        if status == nodes.CHANGEABLE:
-            acc.update(mapping_default(child, name=name, status=status))
-        else:
-            acc.update({name: mapping_default(child)})
-    return acc
+    # return acc
+
+
+if __name__ == "__main__":
+    from gendiff import files
+    from gendiff import nodes
+    from pprint import pprint
+    old = files.load('tests/fixtures/nested_1.json')
+    new = files.load('tests/fixtures/nested_2.yml')
+    tree = nodes.make_tree(old, new)
+    # pprint(tree)
+    mapping_default(tree)
