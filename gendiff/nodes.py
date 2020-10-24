@@ -13,16 +13,7 @@ OLD_VALUE = 'old_value'
 
 
 def _template(acc, key=None, old=None, new=None):
-    if old:
-        acc[key] = {  # noqa: WPS204
-            STATUS: DELETED,
-            VALUE: old.get(key),
-        }
-    if new:
-        acc[key] = {
-            STATUS: ADDED,
-            VALUE: new.get(key),
-        }
+
     if all((old, new)):
         old_value = old.get(key)
         new_value = new.get(key)
@@ -39,6 +30,16 @@ def _template(acc, key=None, old=None, new=None):
                 VALUE: new_value,
                 OLD_VALUE: old_value,
             }
+    elif old:
+        acc[key] = {
+            STATUS: DELETED,
+            VALUE: old.get(key),
+        }
+    elif new:
+        acc[key] = {
+            STATUS: ADDED,
+            VALUE: new.get(key),
+        }
 
 
 def make_tree(old_file, new_file):
