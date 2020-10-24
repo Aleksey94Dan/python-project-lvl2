@@ -12,43 +12,36 @@ VALUE = 'value'
 OLD_VALUE = 'old_value'
 
 
-def _template(  # noqa: WPS211
-    acc,
-    added=None,
-    deleted=None,
-    common=None,
-    old=None,
-    new=None,
-):
-    if added:
-        acc[added] = {
-            STATUS: ADDED,
-            VALUE: new.get(added),
-        }
-    if deleted:
-        acc[deleted] = {
+def _template(acc, key=None, old=None, new=None):
+    if old:
+        acc[key] = {  # noqa: WPS204
             STATUS: DELETED,
-            VALUE: old.get(deleted),
+            VALUE: old.get(key),
         }
-    if common:
-        old_value = old.get(common)
-        new_value = new.get(common)
+    if new:
+        acc[key] = {
+            STATUS: ADDED,
+            VALUE: new.get(key),
+        }
+    if all((old, new)):
+        old_value = old.get(key)
+        new_value = new.get(key)
         if all((isinstance(old_value, dict), isinstance(new_value, dict))):
-            acc[common] = make_tree(old_value, new_value)
+            acc[key] = make_tree(old_value, new_value)
         elif new_value == old_value:
-            acc[common] = {
+            acc[key] = {
                 STATUS: UNCHANGED,
                 VALUE: old_value,
             }
         else:
-            acc[common] = {
+            acc[key] = {
                 STATUS: CHANGED,
                 VALUE: new_value,
                 OLD_VALUE: old_value,
             }
 
 
-def make_tree(old_file, new_file):  # noqa: WPS210
+def make_tree(old_file, new_file):
     """Return an abstract syntax tree."""
     acc = {}
 
@@ -57,19 +50,19 @@ def make_tree(old_file, new_file):  # noqa: WPS210
     deleted_keys = old_file.keys() - new_file.keys()
 
     list(map(
-        lambda added: _template(acc=acc, added=added, new=new_file),
+        lambda added: _template(acc=acc, key=added, new=new_file),
         added_keys,
     ),
     )
     list(map(
-        lambda deleted: _template(acc=acc, deleted=deleted, old=old_file),
+        lambda deleted: _template(acc=acc, key=deleted, old=old_file),
         deleted_keys,
     ),
     )
     list(map(
         lambda common: _template(
             acc=acc,
-            common=common,
+            key=common,
             old=old_file,
             new=new_file,
         ),
