@@ -36,24 +36,25 @@ def mapping(node, path=None, acc=None):  # noqa: WPS231
     return acc
 
 
-def format(source):  # noqa: A001
+def format(source):  # noqa: A001, WPS231
     """Print plain."""
     string = []
-    for package in source:
-        *origin, value_status = package
-        origin = '.'.join(origin)
-        if nodes.ADDED in value_status:
-            string.append(FOR_ADDED.format(origin, value_status[1]))
-        elif nodes.DELETED in value_status:
-            string.append(FOR_DELETED.format(origin, value_status[1]))
-        elif nodes.CHANGED in value_status:
-            string.append(
-                FOR_CHANGED.format(
-                    origin,
-                    value_status[1],
-                    value_status[2],
-                ),
-            )
+    for package in sorted(source):
+        if package:
+            *origin, value_status = package
+            origin = '.'.join(origin)
+            if nodes.ADDED in value_status:
+                string.append(FOR_ADDED.format(origin, value_status[1]))
+            elif nodes.DELETED in value_status:
+                string.append(FOR_DELETED.format(origin, value_status[1]))
+            elif nodes.CHANGED in value_status:
+                string.append(
+                    FOR_CHANGED.format(
+                        origin,
+                        value_status[1],
+                        value_status[2],
+                    ),
+                )
     return '\n'.join(string)
 
 

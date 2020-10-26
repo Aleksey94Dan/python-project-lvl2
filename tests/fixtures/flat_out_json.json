@@ -4,7 +4,7 @@
         "value": false
     },
     "host": {
-        "status": "unchangeable",
+        "status": "unchanged",
         "value": "hexlet.io"
     },
     "proxy": {
@@ -12,7 +12,7 @@
         "value": "123.234.53.22"
     },
     "timeout": {
-        "status": "changeable",
+        "status": "changed",
         "old_value": 50,
         "value": 20
     },
