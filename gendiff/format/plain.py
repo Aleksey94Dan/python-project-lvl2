@@ -6,50 +6,55 @@ from gendiff import nodes
 
 FOR_ADDED = "Property '{0}' was added with value: {1}"
 FOR_DELETED = "Property '{0}' was removed"
-FOR_CHANGEABLE = "Property '{0}' was updated. From {1} to {2}"
+FOR_CHANGED = "Property '{0}' was updated. From {1} to {2}"
 COMPLEX_VALUE = '[complex value]'
 
 
-def mapping_plain(tree):  # noqa: WPS210
+def mapping(node, path=None, acc=None):  # noqa: WPS231
     """Return maps for format plain."""
-    acc = []
-
-    def inner(node, path=None):  # noqa: WPS430, WPS210
-        path = path if path else []
-        children = node.get(CHILDREN)
-        current_value = node.get(VALUE)
-
-        if not children:
-            path.append(current_value)
-            return None
-
-        for child in children:
-            new_path = path.copy()
-            name = child.get(NAME)
-            status = child.get(STATUS)
-
-            if child:
-                if name not in path:
-                    new_path.append(name)
-                    inner(child, new_path)
-                if status is not None:
-                    new_path.append(status)
-                    acc.append(new_path)
-        return list(
-            map(
-                lambda key_for_plain: (
-                    '.'.join(key_for_plain[:-2]),
-                    key_for_plain[-2],
-                    key_for_plain[-1],
-                ),
-                filter(
-                    lambda key_for_plain:
-                        key_for_plain and UNCHANGEABLE not in key_for_plain,
-                    acc,
-                ),
+    path = path if path else []
+    acc = acc if acc else []
+    for k, v in node.items():  # noqa: WPS111
+        new_path = path.copy()
+        new_path.append(k)
+        if v.get(nodes.STATUS) == nodes.ADDED:
+            new_path.append((nodes.ADDED, _helper(v.get(nodes.VALUE))))
+        elif v.get(nodes.STATUS) == nodes.DELETED:
+            new_path.append((nodes.DELETED, _helper(v.get(nodes.VALUE))))
+        elif v.get(nodes.STATUS) == nodes.UNCHANGED:
+            new_path.pop()
+        elif v.get(nodes.STATUS) == nodes.CHANGED:
+            new_path.append((
+                nodes.CHANGED,
+                _helper(v.get(nodes.OLD_VALUE)),
+                _helper(v.get(nodes.VALUE)),
             ),
-        )
-    return inner(tree)
+            )
+        else:
+            mapping(v, new_path, acc)
+        acc.append(new_path)
+    return acc
+
+
+def format(source):  # noqa: A001
+    """Print plain."""
+    string = []
+    for package in source:
+        *origin, value_status = package
+        origin = '.'.join(origin)
+        if nodes.ADDED in value_status:
+            string.append(FOR_ADDED.format(origin, value_status[1]))
+        elif nodes.DELETED in value_status:
+            string.append(FOR_DELETED.format(origin, value_status[1]))
+        elif nodes.CHANGED in value_status:
+            string.append(
+                FOR_CHANGED.format(
+                    origin,
+                    value_status[1],
+                    value_status[2],
+                ),
+            )
+    return '\n'.join(string)
 
 
 def _helper(arg1):
@@ -58,25 +63,3 @@ def _helper(arg1):
     elif isinstance(arg1, dict):
         return COMPLEX_VALUE
     return "'{0}'".format(arg1)
-
-
-def format(source):  # noqa: A001
-    """Print plain."""
-    string = []
-    for values_item in source:
-        (path, current_value, status) = values_item
-
-        if status is ADDED:
-            current_value = _helper(current_value)
-            string.append(FOR_ADDED.format(path, current_value))
-        elif status is DELETED:
-            string.append(FOR_DELETED.format(path))
-        elif status is CHANGEABLE:
-            current_value[OLD_VALUE] = _helper(current_value[OLD_VALUE])
-            current_value[NEW_VALUE] = _helper(current_value[NEW_VALUE])
-            string.append(FOR_CHANGEABLE.format(
-                path,
-                current_value.get(OLD_VALUE),
-                current_value.get(NEW_VALUE),
-            ))
-    return '\n'.join(string)

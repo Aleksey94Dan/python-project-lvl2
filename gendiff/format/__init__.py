@@ -13,7 +13,7 @@ def _compose(g, f):  # noqa: WPS111
 
 
 default = _compose(default.format, default.mapping)
-plain = _compose(plain.format, plain.mapping_plain)
+plain = _compose(plain.format, plain.mapping)
 json = json.dumps
 
 FORMATTERS = (JSON, PLAIN, DEFAULT) = (  # noqa: WPS429

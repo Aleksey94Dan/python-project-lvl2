@@ -10,9 +10,9 @@ SIGN = '    '
 
 
 def _transform(node):
-    if isinstance(node, bool):
+    if isinstance(node, (bool, int)):
         return str(node).lower()
-    elif not isinstance(node, dict):
+    elif isinstance(node, str):
         return node
     res = {}
     for k, v in node.items():  # noqa: WPS111
