@@ -4,58 +4,55 @@
 
 from gendiff import nodes
 
-FOR_ADDED = "Property '{0}' was added with value: {1}"
-FOR_DELETED = "Property '{0}' was removed"
-FOR_CHANGED = "Property '{0}' was updated. From {1} to {2}"
 COMPLEX_VALUE = '[complex value]'
 
 
-def mapping(node, path=None, acc=None):  # noqa: WPS231
+template = {
+    nodes.ADDED: "Property '{0}' was added with value: {1}",
+    nodes.DELETED: "Property '{0}' was removed",
+    nodes.CHANGED: "Property '{0}' was updated. From {2} to {1}",
+    nodes.UNCHANGED: '',
+}.get
+
+
+def mapping(node, path=None, acc=None):  # noqa: WPS210
     """Return maps for format plain."""
     path = path if path else []
     acc = acc if acc else []
-    for k, v in node.items():  # noqa: WPS111
+    for k, v in sorted(node.items(), reverse=True):  # noqa: WPS111
         new_path = path.copy()
         new_path.append(k)
-        if v.get(nodes.STATUS) == nodes.ADDED:
-            new_path.append((nodes.ADDED, _helper(v.get(nodes.VALUE))))
-        elif v.get(nodes.STATUS) == nodes.DELETED:
-            new_path.append((nodes.DELETED, _helper(v.get(nodes.VALUE))))
-        elif v.get(nodes.STATUS) == nodes.UNCHANGED:
-            new_path.pop()
-        elif v.get(nodes.STATUS) == nodes.CHANGED:
+        status = v.get(nodes.STATUS)
+        if status:
             new_path.append((
-                nodes.CHANGED,
+                status,
                 _helper(v.get(nodes.OLD_VALUE)),
                 _helper(v.get(nodes.VALUE)),
             ),
             )
-        else:
+        elif isinstance(v, dict):
             mapping(v, new_path, acc)
         acc.append(new_path)
     return acc
 
 
-def format(source):  # noqa: A001, WPS231
+def format(source):  # noqa: A001, WPS210
     """Print plain."""
     string = []
-    for package in sorted(source):
+    for package in source:
         if package:
             *origin, value_status = package
-            origin = '.'.join(origin)
-            if nodes.ADDED in value_status:
-                string.append(FOR_ADDED.format(origin, value_status[1]))
-            elif nodes.DELETED in value_status:
-                string.append(FOR_DELETED.format(origin, value_status[1]))
-            elif nodes.CHANGED in value_status:
+            if len(value_status) == 3:
+                status, old_value, value = value_status  # noqa:WPS110
                 string.append(
-                    FOR_CHANGED.format(
-                        origin,
-                        value_status[1],
-                        value_status[2],
+                    template(status).format(
+                        '.'.join(origin),
+                        value,
+                        old_value,
                     ),
                 )
-    return '\n'.join(string)
+    string.reverse()
+    return '\n'.join(filter(None, string))
 
 
 def _helper(arg1):
