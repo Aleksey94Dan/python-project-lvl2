@@ -12,33 +12,30 @@ VALUE = 'value'
 OLD_VALUE = 'old_value'
 
 
-def _template(acc, key=None, old=None, new=None):
+def _template(acc, key=None, old_value=None, new_value=None):
 
-    if all((old, new)):
-        old_value = old.get(key)
-        new_value = new.get(key)
-        if all((isinstance(old_value, dict), isinstance(new_value, dict))):
-            acc[key] = make_tree(old_value, new_value)  # noqa: WPS204
-        elif new_value == old_value:
-            acc[key] = {
-                STATUS: UNCHANGED,
-                VALUE: old_value,
-            }
-        else:
-            acc[key] = {
-                STATUS: CHANGED,
-                VALUE: new_value,
-                OLD_VALUE: old_value,
-            }
-    elif old:
+    if all((isinstance(old_value, dict), isinstance(new_value, dict))):
+        acc[key] = make_tree(old_value, new_value)  # noqa: WPS204
+    elif new_value == old_value:
         acc[key] = {
-            STATUS: DELETED,
-            VALUE: old.get(key),
+            STATUS: UNCHANGED,
+            VALUE: old_value,
         }
-    elif new:
+    elif old_value is None:
         acc[key] = {
             STATUS: ADDED,
-            VALUE: new.get(key),
+            VALUE: new_value,
+        }
+    elif new_value is None:
+        acc[key] = {
+            STATUS: DELETED,
+            VALUE: old_value,
+        }
+    else:
+        acc[key] = {
+            STATUS: CHANGED,
+            VALUE: new_value,
+            OLD_VALUE: old_value,
         }
 
 
@@ -51,12 +48,20 @@ def make_tree(old_file, new_file):
     deleted_keys = old_file.keys() - new_file.keys()
 
     list(map(
-        lambda added: _template(acc=acc, key=added, new=new_file),
+        lambda added: _template(
+            acc=acc,
+            key=added,
+            new_value=new_file.get(added),
+        ),
         added_keys,
     ),
     )
     list(map(
-        lambda deleted: _template(acc=acc, key=deleted, old=old_file),
+        lambda deleted: _template(
+            acc=acc,
+            key=deleted,
+            old_value=old_file.get(deleted),
+        ),
         deleted_keys,
     ),
     )
@@ -64,8 +69,8 @@ def make_tree(old_file, new_file):
         lambda common: _template(
             acc=acc,
             key=common,
-            old=old_file,
-            new=new_file,
+            old_value=old_file.get(common),
+            new_value=new_file.get(common),
         ),
         common_keys,
     ),
