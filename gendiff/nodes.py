@@ -47,32 +47,16 @@ def make_tree(old_file, new_file):
     added_keys = new_file.keys() - old_file.keys()
     deleted_keys = old_file.keys() - new_file.keys()
 
+    original_keys = common_keys | added_keys | deleted_keys
+
     list(map(
-        lambda added: _template(
+        lambda key: _template(
             acc=acc,
-            key=added,
-            new_value=new_file.get(added),
+            key=key,
+            old_value=old_file.get(key),
+            new_value=new_file.get(key),
         ),
-        added_keys,
-    ),
-    )
-    list(map(
-        lambda deleted: _template(
-            acc=acc,
-            key=deleted,
-            old_value=old_file.get(deleted),
-        ),
-        deleted_keys,
-    ),
-    )
-    list(map(
-        lambda common: _template(
-            acc=acc,
-            key=common,
-            old_value=old_file.get(common),
-            new_value=new_file.get(common),
-        ),
-        common_keys,
+        original_keys,
     ),
     )
 
