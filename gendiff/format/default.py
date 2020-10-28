@@ -37,10 +37,9 @@ def mapping(tree, indent=0):  # noqa: WPS210
     for k, v in tree.items():  # noqa: WPS111
         status = v.get(nodes.STATUS)
         new_value = _transform(v.get(nodes.VALUE))
-        old_value = _transform(v.get(nodes.OLD_VALUE))
         if status == nodes.CHANGED:
             old, new = _get_template(status)
-            acc[old.format(k)] = old_value
+            acc[old.format(k)] = _transform(v.get(nodes.OLD_VALUE))
             acc[new.format(k)] = new_value
         elif status:
             acc[_get_template(status).format(k)] = new_value
