@@ -9,10 +9,20 @@ from gendiff import nodes
 SIGN = '    '
 
 
+_get_template = {
+    nodes.ADDED: '  + {0}',
+    nodes.DELETED: '  - {0}',
+    nodes.CHANGED: ('  - {0}', '  + {0}'),
+    nodes.UNCHANGED: '    {0}',
+}.get
+
+
 def _transform(node):
     if isinstance(node, (bool, int)):
         return str(node).lower()
     elif isinstance(node, str):
+        return node
+    elif node is None:
         return node
     res = {}
     for k, v in node.items():  # noqa: WPS111
@@ -23,19 +33,21 @@ def _transform(node):
     return res
 
 
-def mapping(tree, indent=0):  # noqa: WPS231
+def mapping(tree, indent=0):  # noqa: WPS210
     """Return file differences without picking and sorting."""
     acc = {}
     for k, v in tree.items():  # noqa: WPS111
-        if v.get(nodes.STATUS) == nodes.ADDED:
-            acc['  + {0}'.format(k)] = _transform(v[nodes.VALUE])
-        elif v.get(nodes.STATUS) == nodes.DELETED:
-            acc['  - {0}'.format(k)] = _transform(v[nodes.VALUE])
-        elif v.get(nodes.STATUS) == nodes.UNCHANGED:
-            acc['    {0}'.format(k)] = _transform(v[nodes.VALUE])
-        elif v.get(nodes.STATUS) == nodes.CHANGED:
-            acc['  - {0}'.format(k)] = _transform(v[nodes.OLD_VALUE])
-            acc['  + {0}'.format(k)] = _transform(v[nodes.VALUE])
+        status = v.get(nodes.STATUS)
+        new_value = _transform(v.get(nodes.VALUE))
+        old_value = _transform(v.get(nodes.OLD_VALUE))
+        if status:
+            template = _get_template(status)
+            if status == nodes.CHANGED:
+                old, new = template
+                acc[old.format(k)] = old_value
+                acc[new.format(k)] = new_value
+            else:
+                acc[template.format(k)] = new_value
         else:
             acc['    {0}'.format(k)] = mapping(v)
     return acc

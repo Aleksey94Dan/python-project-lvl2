@@ -12,7 +12,7 @@ VALUE = 'value'
 OLD_VALUE = 'old_value'
 
 
-def _template(acc, key=None, old_value=None, new_value=None):
+def _get_template(acc, key=None, old_value=None, new_value=None):
 
     if all((isinstance(old_value, dict), isinstance(new_value, dict))):
         acc[key] = make_tree(old_value, new_value)  # noqa: WPS204
@@ -46,7 +46,7 @@ def make_tree(old_file, new_file):
     original_keys = old_file.keys() | new_file.keys()
 
     list(map(
-        lambda key: _template(
+        lambda key: _get_template(
             acc=acc,
             key=key,
             old_value=old_file.get(key),
@@ -55,5 +55,4 @@ def make_tree(old_file, new_file):
         original_keys,
     ),
     )
-
     return acc

@@ -7,7 +7,7 @@ from gendiff import nodes
 COMPLEX_VALUE = '[complex value]'
 
 
-template = {
+_get_template = {
     nodes.ADDED: "Property '{0}' was added with value: {1}",
     nodes.DELETED: "Property '{0}' was removed",
     nodes.CHANGED: "Property '{0}' was updated. From {2} to {1}",
@@ -43,7 +43,11 @@ def format(source):  # noqa: A001, WPS210
     for package in source:
         *origin, (status, old_value, new_value) = package  # noqa: WPS414
         string.append(
-            template(status).format('.'.join(origin), new_value, old_value),
+            _get_template(status).format(
+                '.'.join(origin),
+                new_value,
+                old_value,
+            ),
         )
     string.reverse()
     return '\n'.join(filter(None, string))
