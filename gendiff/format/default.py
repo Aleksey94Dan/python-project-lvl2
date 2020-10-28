@@ -40,14 +40,12 @@ def mapping(tree, indent=0):  # noqa: WPS210
         status = v.get(nodes.STATUS)
         new_value = _transform(v.get(nodes.VALUE))
         old_value = _transform(v.get(nodes.OLD_VALUE))
-        if status:
-            template = _get_template(status)
-            if status == nodes.CHANGED:
-                old, new = template
-                acc[old.format(k)] = old_value
-                acc[new.format(k)] = new_value
-            else:
-                acc[template.format(k)] = new_value
+        if status == nodes.CHANGED:
+            old, new = _get_template(status)
+            acc[old.format(k)] = old_value
+            acc[new.format(k)] = new_value
+        elif status:
+            acc[_get_template(status).format(k)] = new_value
         else:
             acc['    {0}'.format(k)] = mapping(v)
     return acc
