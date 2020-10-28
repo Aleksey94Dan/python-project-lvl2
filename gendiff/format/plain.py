@@ -38,19 +38,13 @@ def mapping(node, path=None, acc=None):  # noqa: WPS210
 
 def format(source):  # noqa: A001, WPS210
     """Print plain."""
+    source = filter(lambda x: isinstance(x[-1], tuple), source)  # noqa: WPS111
     string = []
     for package in source:
-        if package:
-            *origin, value_status = package
-            if len(value_status) == 3:
-                status, old_value, value = value_status  # noqa:WPS110
-                string.append(
-                    template(status).format(
-                        '.'.join(origin),
-                        value,
-                        old_value,
-                    ),
-                )
+        *origin, (status, old_value, new_value) = package  # noqa: WPS414
+        string.append(
+            template(status).format('.'.join(origin), new_value, old_value),
+        )
     string.reverse()
     return '\n'.join(filter(None, string))
 

@@ -43,11 +43,7 @@ def make_tree(old_file, new_file):
     """Return an abstract syntax tree."""
     acc = {}
 
-    common_keys = old_file.keys() & new_file.keys()
-    added_keys = new_file.keys() - old_file.keys()
-    deleted_keys = old_file.keys() - new_file.keys()
-
-    original_keys = common_keys | added_keys | deleted_keys
+    original_keys = old_file.keys() | new_file.keys()
 
     list(map(
         lambda key: _template(
