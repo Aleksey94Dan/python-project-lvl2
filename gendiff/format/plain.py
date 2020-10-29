@@ -14,11 +14,11 @@ _get_template = {
 }.get
 
 
-def _flatten(subtree, acc=None):
-    acc = acc if acc else []
+def _flatten(subtree):
+    acc = []
     for node in subtree:
         if isinstance(node, list):
-            _flatten(node, acc)
+            acc.extend(_flatten(node))
         else:
             acc.append(node)
     return acc
