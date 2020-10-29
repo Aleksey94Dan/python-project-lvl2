@@ -47,7 +47,7 @@ def mapping(node, key=None, ancestry=None):
             node.items(),
         ),
     )
-    return _flatten(paths)
+    return sorted(_flatten(paths), reverse=True)
 
 
 def format(source):  # noqa: A001, WPS210
