@@ -54,8 +54,6 @@ def format(source):  # noqa: A001, WPS210
 
 
 def _helper(arg1):
-    if isinstance(arg1, (bool, int)):
-        return str(arg1).lower()
-    elif isinstance(arg1, dict):
+    if isinstance(arg1, dict):
         return COMPLEX_VALUE
     return "'{0}'".format(arg1)
