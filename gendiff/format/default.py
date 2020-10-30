@@ -17,7 +17,7 @@ _get_template = {
 }.get
 
 
-def _transform(node):
+def _helper(node):
     if isinstance(node, (bool, int)):
         return str(node).lower()
     elif isinstance(node, str):
@@ -25,7 +25,7 @@ def _transform(node):
     elif node is None:
         return node
     return {
-        '{0}{1}'.format(SIGN, original_key): _transform(original_value)
+        '{0}{1}'.format(SIGN, original_key): _helper(original_value)
         if isinstance(original_value, dict) else original_value
         for original_key, original_value in node.items()
     }
@@ -36,8 +36,8 @@ def mapping(tree, indent=0):  # noqa: WPS210
     acc = {}
     for k, v in tree.items():  # noqa: WPS111
         status = v.get(nodes.STATUS)
-        new_value = _transform(v.get(nodes.VALUE))
-        old_value = _transform(v.get(nodes.OLD_VALUE))
+        new_value = _helper(v.get(nodes.VALUE))
+        old_value = _helper(v.get(nodes.OLD_VALUE))
         if status == nodes.CHANGED:
             old, new = _get_template(status)
             acc[old.format(k)] = old_value
@@ -45,7 +45,7 @@ def mapping(tree, indent=0):  # noqa: WPS210
         elif status:
             acc[_get_template(status).format(k)] = new_value
         else:
-            acc['    {0}'.format(k)] = mapping(v)
+            acc[_get_template(nodes.UNCHANGED).format(k)] = mapping(v)
     return acc
 
 
