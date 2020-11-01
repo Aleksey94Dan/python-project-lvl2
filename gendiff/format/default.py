@@ -8,6 +8,8 @@ from gendiff import nodes
 
 SIGN = '    '
 
+BY_THE_FIRST_LETTER = 4
+BY_DIGIT = -1
 
 _get_template = {
     nodes.ADDED: '  + {0}',
@@ -51,7 +53,10 @@ def mapping(tree, indent=0):  # noqa: WPS210
 
 def _inner(node, indent=0):
     string = []
-    for vertex in sorted(node.keys(), key=itemgetter(4, -1)):
+    for vertex in sorted(  # noqa: WPS352
+        node.keys(),
+        key=itemgetter(BY_THE_FIRST_LETTER, BY_DIGIT),
+    ):
         child = node.get(vertex)
         if isinstance(child, dict):
             string.append('{0}{1}: {{\n'.format(indent * SIGN, vertex))
