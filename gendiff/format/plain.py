@@ -39,12 +39,13 @@ def mapping(node, key=None, ancestry=None):
         )
     paths = list(
         map(
-            lambda x: mapping(  # noqa: WPS111
-                x[1],
-                x[0],
+            lambda original_values, original_keys: mapping(
+                original_values,
+                original_keys,
                 new_ancestry,
             ),
-            node.items(),
+            node.values(),
+            node.keys(),
         ),
     )
     return sorted(_flatten(paths), reverse=True)
